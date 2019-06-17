@@ -41,7 +41,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>readme.md</itemPath>
+    <itemPath>README.md</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -81,13 +81,13 @@
       </item>
       <item path="NodoM.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Usuario.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="readme.md" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -138,13 +138,13 @@
       </item>
       <item path="NodoM.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="README.md" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Usuario.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Usuario.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="readme.md" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
