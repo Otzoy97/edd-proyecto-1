@@ -1,7 +1,7 @@
 # Universidad de San Carlos Guatemala
-# Facultad de Ingeniería
-# Escuela de Sistemas
-# Vacaciones Junio 2019
+### Facultad de Ingeniería
+### Escuela de Sistemas
+#### Vacaciones Junio 2019
 
 ## Drawing canvas
 
