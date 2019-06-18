@@ -46,22 +46,16 @@ int main(int argc, char** argv) {
     
     
     Matriz *matriz = new Matriz();
-    matriz->AgregarEn(1,1,"A");
+    matriz->AgregarEn(1,1,"yellow");
     
-    matriz->AgregarEn(2,3,"B");
-    matriz->AgregarEn(2,3,"E");
-    matriz->AgregarEn(0,1,"C");
-    matriz->AgregarEn(1,5,"D");
-    matriz->AgregarEn(2,1, "T");
-    matriz->AgregarEn(2,5,"G");
-    matriz->AgregarEn(2,5,"W");
-    matriz->AgregarEn(0,5,"G");
-    matriz->AgregarEn(1,0,"K");
-    matriz->AgregarEn(0,0,"X");
-    matriz->AgregarEn(2,0,"Y");
-    matriz->AgregarEn(0,0,"L");
-    matriz->AgregarEn(0,0,"ZZ");
+    matriz->AgregarEn(2,3,"green");
+    matriz->AgregarEn(2,5,"brown");
+    matriz->AgregarEn(0,1,"gray");
+    matriz->AgregarEn(1,5,"blue");
+    matriz->AgregarEn(2,1, "red");
+
 
     cout << matriz->Dot();
+    cout << matriz->Pintar();
 }
 

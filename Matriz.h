@@ -28,7 +28,7 @@ class Matriz{
         int Filas() {return filas;}
         int Cols() {return cols;}
         string Dot();
-        string Renderizar();
+        string Pintar();
     private:
         NodoM<string> *pivoteMatriz;
         string PalDotRow(NodoM<string> *nodito);
@@ -137,14 +137,9 @@ void Matriz::AgregarEn(int fila,int col, string dato){
         colAdd = colAdd->abajo;
     }
     //Determina si la coordenada es igual a (fila, col)
-    /*bool a = colAdd->col == col;
-    bool b = colAdd->fila == fila;
-    bool c = filaAdd->fila == fila;
-    bool d = filaAdd->col == col;
-    cout << a << endl << b << endl << c << endl << d << endl;*/
     if(colAdd->col == col && colAdd->fila == fila && filaAdd->fila == fila && filaAdd->col == col )
     {
-        //Es el encabezado, para el caso(0,0)
+        //Si es la posicion (0,0)
         if (fila == 0 && col == 0){ 
             if(YaExiste){
                 //Ya existe solo cambia el nodo siguiente
@@ -189,7 +184,6 @@ void Matriz::AgregarEn(int fila,int col, string dato){
         colAdd->abajo = nuevo;
         esVacia = false;
     }
-    //delete filaAdd, colAdd, filaPiv, colPiv;
 }
 /**
  * Genera el string que se utlizará para graficar la matriz
@@ -300,6 +294,48 @@ string Matriz::PalDotCol(NodoM<string> *nodito){
         retorno << PalDotCol(nodito->abajo);
         retorno << "p" << nodito << "->";   
     } 
+    return retorno.str();
+}
+/**
+ * Genera una imagen a través de una tabla anidada en un nodo de graphviz
+ * @return 
+ */
+string Matriz::Pintar(){
+    stringstream retorno;
+    if (esVacia)
+        return string();
+    //Nodo temporales que se utilizarán para recorrer filas, columnas
+    NodoM<string> *tempFila = pivoteMatriz->abajo;
+    NodoM<string> *tempCelda;
+    retorno << "graph G{" << endl << "node[shape=plaintext]" << endl;
+    retorno << "a0[label=<" << endl;
+    retorno << "<table border=\"0\" cellspacing=\"0\">" << endl;
+    int contador = 0;
+    while(tempFila){
+        tempCelda = tempFila->siguiente;
+        retorno << "<tr>" << endl;
+        contador = 0;
+        while(tempCelda){
+            //Determina cuantas celdas hicieron falta de pintar
+            for(contador ; contador < tempCelda->col ; contador++){
+                retorno << "<td border=\"0\" bgcolor=\"white\"></td>" << endl;
+            }
+            retorno << "<td border=\"0\" bgcolor=\"" << tempCelda->Dato() << "\"></td>" << endl;
+            contador++;
+            //Verifica si el siguiente es nulo
+            if (!tempCelda->siguiente){
+                //Verifica si aun hay celdas pendientes de agregar
+                for(contador ;  contador < cols-1 ; contador++){
+                    retorno << "<td border=\"0\" bgcolor=\"white\"></td>" << endl;
+                }
+            }
+            tempCelda = tempCelda->siguiente;
+        }
+        retorno << "</tr>" << endl;
+        tempFila = tempFila->abajo;
+    }
+    retorno << "</table>" << endl;
+    retorno << ">];" << endl << "}";
     return retorno.str();
 }
 
