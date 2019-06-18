@@ -24,11 +24,12 @@ class Matriz{
     public:
         ///Constructor por defecto
         Matriz();
-        void AgregarEn(int fila,int col, string dato);
+        void AgregarEn(int fila,int col,const string &dato);
         int Filas() {return filas;}
         int Cols() {return cols;}
         string Dot();
         string Pintar();
+        void Volcar(Matriz *ref);
     private:
         NodoM<string> *pivoteMatriz;
         string PalDotRow(NodoM<string> *nodito);
@@ -39,6 +40,32 @@ class Matriz{
         //Sirve para saber si ya existe la esquina 0,0
         bool YaExiste;
 };
+
+/**
+ * Vacía la matriz en la actual
+ * @param vaciar
+ */
+void Matriz::Volcar(Matriz* ref){
+    //Obtiene el apuntador de matriz pivote;
+    NodoM<string> *pivoteVaciar = vaciar->pivoteMatriz;
+    //Obtiene las fila 
+    NodoM<string> *pivoteFila = pivoteVaciar->abajo;
+    //Obtiene la columna
+    NodoM<string> *pivoteCol;
+    //Recorre las filas (encabezados)
+    while(pivoteFila){
+        //Recupera el primero nodo celda de la fila
+        pivoteCol = pivoteFila->siguiente;
+        while(pivoteCol){
+            //Agrega el nuevo dato a la matriz
+            this->AgregarEn(pivoteCol->fila, pivoteCol->col, pivoteCol->Dato());
+            //Recorrer las celdas de la fila
+            pivoteCol = pivoteCol->siguiente;
+        }    
+        pivoteFila = pivoteFila->abajo;
+    }
+}
+
 /**
  * Inicializa todas los parametros de la matriz
  */
@@ -58,7 +85,7 @@ Matriz::Matriz(){
  * @param col
  * @param dato
  */
-void Matriz::AgregarEn(int fila,int col, string dato){
+void Matriz::AgregarEn(int fila,int col, const string &dato){
     //Establece cuatro apuntadores para recorrer y agregar encabezados de filas o columnas si fuera necesarios
     //y para recorrer y agregar el nodo (o modificarlo)
     NodoM<string> *filaPiv = pivoteMatriz;
@@ -325,7 +352,7 @@ string Matriz::Pintar(){
             //Verifica si el siguiente es nulo
             if (!tempCelda->siguiente){
                 //Verifica si aun hay celdas pendientes de agregar
-                for(contador ;  contador < cols-1 ; contador++){
+                for(contador ;  contador < cols ; contador++){
                     retorno << "<td border=\"0\" bgcolor=\"white\"></td>" << endl;
                 }
             }
