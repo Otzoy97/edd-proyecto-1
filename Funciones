@@ -1,0 +1,35 @@
+Matriz <string>
+-> Dot (Listo)
+-> Pintar (Listo)
+-> Agregar (Listo)
+Imagenes (id, capas)
+-> Dot de capas (Listo)
+-> Renderizar (Listo)
+-> AgregarImagenes 
+-> LlenarColaCapas
+Capas (id, matriz)
+-> Alojar y devolver capas (Listo)
+-> AgregarCapas
+ArbolBB <Capa>
+-> Dot
+-> Agregar
+-> DotEspejo
+-> Buscar
+-> InOrden
+-> PreOrden
+-> PostOrden
+ArbolAVL <Usuario>
+-> Dot
+-> Agregar
+-> Modificar
+-> Buscar
+-> Eliminar
+Usuario (id)
+-> AgregarImagen
+-> EliminarImagen
+-> DotListaImagenes
+-> BuscarImagen
+ListaCircular <Imagen>
+-> Buscar
+-> Agregar (Listo)
+-> Dot (Listo)

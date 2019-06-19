@@ -16,6 +16,7 @@
       <itemPath>NodoB.h</itemPath>
       <itemPath>NodoL.h</itemPath>
       <itemPath>NodoM.h</itemPath>
+      <itemPath>Pila.h</itemPath>
       <itemPath>Usuario.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -25,8 +26,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Capa.cpp</itemPath>
-      <itemPath>Imagen.cpp</itemPath>
       <itemPath>Usuario.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -57,15 +56,11 @@
       </item>
       <item path="ArbolBB.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Capa.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Capa.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Cola.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="INodo.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Imagen.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -80,6 +75,8 @@
       <item path="NodoL.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="NodoM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Pila.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
@@ -114,15 +111,11 @@
       </item>
       <item path="ArbolBB.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Capa.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Capa.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Cola.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="INodo.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Imagen.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Imagen.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -137,6 +130,8 @@
       <item path="NodoL.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="NodoM.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Pila.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="README.md" ex="false" tool="3" flavor2="0">
       </item>
