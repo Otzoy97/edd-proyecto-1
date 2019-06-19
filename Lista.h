@@ -29,26 +29,28 @@ class Lista {
         void Agregar(Imagen &dato);
         bool Eliminar(int id);
         bool Modificar(int id, Imagen &nuevo);
-        string Dot(const string &padre);
+        string Dot();
     private:
-        NodoL<Imagen*> *primero;
-        NodoL<Imagen*> *ultimo;
+        NodoL<Imagen> *primero;
+        NodoL<Imagen> *ultimo;
         int largo;
-        string Recorrer(NodoL<Imagen> *raiz);
+        //string Recorrer(NodoL<Imagen> *raiz);
 };
 /**
  * Agrega un nuevo apuntador de tipo Imagen
  * @param dato
  */
-void Lista::Agregar(Imagen &dato){
-    NodoL<Imagen*> nuevo = new NodoL(dato);
+void Lista::Agregar(Imagen dato){
+    NodoL<Imagen> nuevo = new NodoL(dato);
     if (primero != NULL){
+        primero = nuevo;
+        ultimo = primero;
+    } else {
+        nuevo->siguiente = primero;
+        nuevo->anterior = ultimo;
+        primero->anterior = nuevo;
         ultimo->siguiente = nuevo;
         ultimo = nuevo;
-    } else {
-        primero = nuevo;
-        primero->siguiente = ultimo;
-        primero = ultimo;
     }
 }
 /**
@@ -58,7 +60,7 @@ void Lista::Agregar(Imagen &dato){
  * @return 
  */
 bool Lista::Modificar(int id, Imagen &nuevo){
-    NodoL<Imagen*> temp = primero;
+    NodoL<Imagen> temp = primero;
     while(temp!=NULL){
         if(temp->Dato()->Id() == id){
             temp->Dato() = nuevo;
@@ -73,7 +75,7 @@ bool Lista::Modificar(int id, Imagen &nuevo){
  * @param id
  */
 bool Lista::Eliminar(int id){
-    NodoL<Imagen*> temp = primero;
+    NodoL<Imagen> temp = primero;
     if(temp->Dato()->Id() == id){
         if(temp->siguiente != NULL){
             primero = temp->siguiente;
@@ -85,7 +87,7 @@ bool Lista::Eliminar(int id){
         delete temp;
         return true;
     }
-    NodoL<Imagen*> aux;
+    NodoL<Imagen> aux;
     while(temp->siguiente!=NULL){
         aux = temp->siguiente;
         if(aux->Dato()->Id() == id){
@@ -103,8 +105,24 @@ bool Lista::Eliminar(int id){
  * @return 
  */
 string Lista::Dot(const string &padre){
+    if (!primero)
+        return string();
     stringstream retorno;
-    retorno << "p" << padre << " -> p" << primero << endl << Recorrer(primero);
+    retorno << "subgraph cluster" << this << "{" << endl;
+    retorno << "color=white;"<< endl;
+    retorno << "{rank = same ;";
+    NodoL<Imagen> *aux = this->primero;
+    do{
+        retorno << aux->Dato() << "->";
+        aux->siguiente;
+    }while(aux!=this->primero);
+    do{
+        retorno << aux->Dato();
+        if(aux!=this->primero)
+            retorno << "->";
+        aux->anterior;
+    }while(aux!=this->primero);
+    retorno << "}" << endl << "}" << endl;
     return retorno.str();
 }
 /**
@@ -113,14 +131,16 @@ string Lista::Dot(const string &padre){
  * @return 
  */
 string Lista::Recorrer(NodoL<Imagen>* raiz){
-    stringstream retorno;
-    if(raiz!=NULL){
-        retorno << "p" << raiz << "[label=\"Img" << raiz->Dato()->Id() << "\"];" << endl;
-        if (raiz->siguiente != NULL)
-            retorno << "p" << raiz << "-> p" << raiz->siguiente << endl;
-        retorno << Recorrer(raiz->siguiente);
-    }
-    return retorno.str();
+    //stringstream retorno;
+    //if(raiz!=NULL){
+    //    retorno << "p" << raiz->Dato() << "[label=\"Imagen " << raiz->Dato().Id() <<  "\"; group = " << raiz->Dato().Id() <<"];" << endl;
+    //    if (raiz->siguiente != NULL){
+    //        NodoL<Imagen> *aux = raiz->siguiente;
+    //        retorno << "p" << raiz->Dato() << "-> p" << aux->Dato() << endl;
+    //    }
+    //    retorno << Recorrer(raiz->siguiente);
+    //}
+    return string(); //retorno.str();
 }
 #endif /* LISTA_H */
 
