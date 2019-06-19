@@ -97,6 +97,7 @@ int Imagen::Id(){
  */
 Imagen::Imagen(const int& id_){
     id = id_;
+    colaCapas = new Cola<Capa>();
 }
 
 #endif /* IMAGEN_H */
