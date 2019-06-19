@@ -42,12 +42,12 @@ class Matriz{
 };
 
 /**
- * Vacía la matriz en la actual
+ * Vacía la matriz de referencia en la matriz actual
  * @param vaciar
  */
 void Matriz::Volcar(Matriz* ref){
     //Obtiene el apuntador de matriz pivote;
-    NodoM<string> *pivoteVaciar = vaciar->pivoteMatriz;
+    NodoM<string> *pivoteVaciar = ref->pivoteMatriz;
     //Obtiene las fila 
     NodoM<string> *pivoteFila = pivoteVaciar->abajo;
     //Obtiene la columna
