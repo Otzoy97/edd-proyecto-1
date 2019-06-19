@@ -23,12 +23,14 @@ using namespace std;
 template <class T> class Cola{
     public:
         Cola() : primero(0), ultimo(0), largo(0) {}
-        void Encolar(T dato);
+        void AgregarAlFinal(T dato);
         T Desencolar();
         int Largo() {return largo;}
-        string Dot(const string &nombre);
+        //string Dot();
         T Ver();
+        NodoL<T> *Iterador(){ return primero;}
     private:
+        //string Recorrer(NodoL<T> *nodito);
         NodoL<T> *primero;
         NodoL<T> *ultimo;
         int largo;
@@ -49,7 +51,7 @@ template <class T> T Cola<T>::Desencolar(){
  * Encola un nuevo dato
  * @param dato
  */
-template <class T> void Cola<T>::Encolar(T dato){
+template <class T> void Cola<T>::AgregarAlFinal(T dato){
     NodoL<T> *nuevo = new NodoL<T>(dato);
     if(primero!=NULL){
         ultimo->siguiente = nuevo;
@@ -69,15 +71,23 @@ template <class T> void Cola<T>::Encolar(T dato){
 template <class T> T Cola<T>::Ver(){
     return primero->Dato();
 }
-/**
- * 
- * @param nombre
- * @return 
- */
-template <class T> string Cola<T>::Dot(const string &nombre){
-    stringstream str;
-    return str.str();
-};
+/*
+template <class T> string Cola<T>::Dot(){
+    stringstream retorno;
+    retorno << "subgraph C" << this << "{" <<  endl <<  Recorrer(primero) << "}" << endl;
+    return retorno.str();
+}
+
+template <class T> string Cola<T>::Recorrer(NodoL<T>* nodito){
+    stringstream retorno;
+    if(nodito!=NULL){
+        retorno << "p" << nodito << "[label=\"" << "\"];" << endl;
+        if (nodito->siguiente!=NULL)
+            retorno << "p" << nodito<< "-> p" << nodito->siguiente << endl;
+        retorno << Recorrer(nodito->siguiente);
+    }
+    return retorno.str();
+}*/
 
 #endif /* COLA_H */
 

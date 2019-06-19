@@ -14,16 +14,90 @@
 #ifndef IMAGEN_H
 #define IMAGEN_H
 
+//#include "Matriz.h"
+#include "Capa.h"
+#include "Cola.h"
+#include <string>
+#include <sstream>
+#include <iostream>
+
+using namespace std;
+
 class Imagen {
 public:
-    Imagen() : id(0) {}
-    Imagen(const Imagen& orig);
-    virtual ~Imagen();
-    int Id() {return id;}
+    Imagen(const int &id_);
+    int Id();
+    Cola<Capa> *Capas();
+    string Renderizar();
+    string Dot();
 private:
     int id;
-
+    string Recorrer(NodoL<Capa> nodito);
+    Cola<Capa> *colaCapas;
 };
+/**
+ * Recupera el dot de la cola de capas
+ * @param ref nombre del nodo imagen
+ * @param group
+ * @return 
+ */
+string Imagen::Dot(){
+    if (!colaCapas->Largo())
+        return string();
+    stringstream retorno;
+    retorno << "subgraph cluster" << this << "{" << endl;
+    NodoL<Capa> *iterador = colaCapas->Iterador();
+    retorno << "p" << this << "[label=\"Imagen " << this->id << "\"; group = " << this->id << ";  shape=box];" <<  endl;
+    retorno << "p" << this << " -> p" <<  iterador->Dato().Capa_;
+    while(iterador){
+        retorno << "p" << iterador->Dato().Capa_ << "[label=\"Capa " << iterador->Dato().id << "\"; group = "<< this->id <<"; style=rounded; shape=box];" << endl;
+        if (iterador->siguiente)
+            retorno << "p" << iterador->Dato().Capa_ << "-> p"  << iterador->siguiente << endl;
+        iterador = iterador->siguiente;
+    }
+    retorno << "}" << endl;
+    return retorno.str();
+}
+
+/**
+ * Renderiza las capas de la imagen
+ * @return 
+ */
+string Imagen::Renderizar(){
+    Matriz *imagen = new Matriz();
+    //Recupera el inicio de la cola
+    NodoL<Capa> *pivCola = colaCapas->Iterador();
+    //Recorre la lista
+    while(pivCola){
+        //Vuelca las capas almacenadas en la cola
+        imagen->Volcar(pivCola->Dato().Capa_);
+        //Se mueve al siguiente nodo
+        pivCola = pivCola->siguiente;
+    }
+    //Retorna un texto dot
+    return imagen->Pintar();
+}
+/**
+ * Recupera la cola de capas
+ * @return 
+ */
+Cola<Capa> *Imagen::Capas(){
+    return colaCapas;
+}
+/**
+ * Recupera el id de la imagen
+ * @return 
+ */
+int Imagen::Id(){
+    return id;
+}
+/**
+ * Constructor
+ * @param id_
+ */
+Imagen::Imagen(const int& id_){
+    id = id_;
+}
 
 #endif /* IMAGEN_H */
 
