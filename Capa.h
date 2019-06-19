@@ -13,14 +13,14 @@
 
 #ifndef CAPA_H
 #define CAPA_H
+#include "Matriz.h"
 
 class Capa {
 public:
-    Capa();
-    Capa(const Capa& orig);
-    virtual ~Capa();
+    Capa(Matriz* capa_, int id_) : Capa_(capa_) , id (id_) {}
+    int id;
+    Matriz* Capa_;
 private:
-
 };
 
 #endif /* CAPA_H */
