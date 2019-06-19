@@ -17,29 +17,29 @@
 #include <sstream>
 #include <iostream>
 #include "NodoB.h"
-#include "Imagen.h"
+#include "Capa.h"
 
 using namespace std;
 
 class ArbolB{
     public:
         ArbolB() : raiz(0) {}
-        void Agregar(Imagen dato);
-        NodoB<Imagen> *Buscar(int id);
+        void Agregar(Capa dato);
+        NodoB<Capa> *Buscar(int id);
         void Eliminar(int id);
         bool EsVacia() { return raiz == NULL; }
     private:
-        NodoB<Imagen> *raiz;
-        void Agregar(NodoB<Imagen> *raiz, Imagen dato);
-        NodoB<Imagen> *Buscar(NodoB<Imagen> *raiz, int id);
-        void Eliminar(NodoB<Imagen> *raiz, int id);
-        void Reemplazar(NodoB<Imagen> *raiz, NodoB<Imagen> *aux);
+        NodoB<Capa> *raiz;
+        void Agregar(NodoB<Capa> *raiz, Capa dato);
+        NodoB<Capa> *Buscar(NodoB<Capa> *raiz, int id);
+        void Eliminar(NodoB<Capa> *raiz, int id);
+        void Reemplazar(NodoB<Capa> *raiz, NodoB<Capa> *aux);
 };
 /**
  * 
  * @param dato
  */
-void ArbolB::Agregar(Imagen dato){
+void ArbolB::Agregar(Capa dato){
     Agregar(raiz, dato);
 }
 /**
@@ -47,7 +47,7 @@ void ArbolB::Agregar(Imagen dato){
  * @param id
  * @return 
  */
-NodoB<Imagen>* ArbolB::Buscar(int id){
+NodoB<Capa>* ArbolB::Buscar(int id){
     return Buscar(raiz, id);
 }
 /**
@@ -65,19 +65,19 @@ void ArbolB::Eliminar(int id){
  * @param id
  * @return 
  */
-void ArbolB::Agregar(NodoB<Imagen>* root, Imagen dato){
+void ArbolB::Agregar(NodoB<Capa>* root, Capa dato){
     if(root == NULL){
-        NodoB<Imagen> *root = new NodoB<Imagen>(dato);
+        NodoB<Capa> *root = new NodoB<Capa>(dato);
     } else if (dato.Id() <= root->Dato().Id()){
         if(root->izq != NULL)
             Agregar(root->izq, dato);
         else
-            root->izq = new NodoB<Imagen>(dato);
+            root->izq = new NodoB<Capa>(dato);
     } else if (dato.Id() > root->Dato().Id()){
         if(root->der != NULL)
             Agregar(root->der, dato);
         else 
-            root->der = new NodoB<Imagen>(dato);
+            root->der = new NodoB<Capa>(dato);
     }
 }
 /**
@@ -86,7 +86,7 @@ void ArbolB::Agregar(NodoB<Imagen>* root, Imagen dato){
  * @param id
  * @return 
  */
-NodoB<Imagen> *ArbolB::Buscar(NodoB<Imagen>* root, int id){
+NodoB<Capa> *ArbolB::Buscar(NodoB<Capa>* root, int id){
     if(root == NULL)
         return NULL;
     if (root->Dato().Id() == id)
@@ -102,7 +102,7 @@ NodoB<Imagen> *ArbolB::Buscar(NodoB<Imagen>* root, int id){
  * @param id
  * @return 
  */
-void ArbolB::Eliminar(NodoB<Imagen>* root, int id){
+void ArbolB::Eliminar(NodoB<Capa>* root, int id){
     if (root == NULL)
         return;
     if (root->Dato().Id() < id)
@@ -110,7 +110,7 @@ void ArbolB::Eliminar(NodoB<Imagen>* root, int id){
     else if (root->Dato().Id() > id)
         Eliminar(root->izq, id);
     else if(root->Dato().Id() == id){
-        NodoB<Imagen> *aux = root;
+        NodoB<Capa> *aux = root;
         if (root->izq == NULL)
             aux = aux->der;
         else if (root->der == NULL)
@@ -125,7 +125,7 @@ void ArbolB::Eliminar(NodoB<Imagen>* root, int id){
  * @param raiz
  * @param aux
  */
-void ArbolB::Reemplazar(NodoB<Imagen>* raiz, NodoB<Imagen>* aux){
+void ArbolB::Reemplazar(NodoB<Capa>* raiz, NodoB<Capa>* aux){
     if (raiz->der == NULL){
         aux->Dato() = raiz->Dato();
         aux = raiz;
