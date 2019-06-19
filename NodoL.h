@@ -22,6 +22,7 @@ template <class T> class NodoL : public INodo{
         NodoL() : anterior(0), siguiente(0), dato(0){}
         NodoL(T dato_) : anterior(0), siguiente(0), dato(dato_){}
         T Dato(){return dato;}
+        T *DatoPtr(){return &dato;}
     private:
         T dato;
 };
