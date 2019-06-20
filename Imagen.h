@@ -27,13 +27,13 @@ class Imagen {
 public:
     Imagen(const int &id_);
     int Id();
-    Cola<Capa> *Capas();
+    Cola<Capa*> *Capas();
     string Renderizar();
-    string Dot();
+    string Dot(const string &padre);
 private:
     int id;
-    string Recorrer(NodoL<Capa> nodito);
-    Cola<Capa> *colaCapas;
+    string Recorrer(NodoL<Capa*> nodito);
+    Cola<Capa*> *colaCapas;
 };
 /**
  * Recupera el dot de la cola de capas
@@ -41,18 +41,20 @@ private:
  * @param group
  * @return 
  */
-string Imagen::Dot(){
+string Imagen::Dot(const string &padre){
     if (!colaCapas->Largo())
         return string();
     stringstream retorno;
-    retorno << "subgraph cluster" << this << "{" << endl;
-    NodoL<Capa> *iterador = colaCapas->Iterador();
-    retorno << "p" << this << "[label=\"Imagen " << this->id << "\"; group = " << this->id << ";  shape=box];" <<  endl;
-    retorno << "p" << this << " -> p" <<  iterador->Dato().Capa_;
+    retorno << "subgraph cluster" << this << "{" << endl << "color=white" << endl;
+    NodoL<Capa*> *iterador = colaCapas->Iterador();
+    retorno << "p" << padre << "[label=\"Imagen " << this->id << "\"; group = " << this->id + 1 << ";  shape=box];" <<  endl;
+    retorno << "p" << padre << " -> p" <<  iterador->Dato()->Capa_ << endl;
     while(iterador){
-        retorno << "p" << iterador->Dato().Capa_ << "[label=\"Capa " << iterador->Dato().id << "\"; group = "<< this->id <<"; style=rounded; shape=box];" << endl;
-        if (iterador->siguiente)
-            retorno << "p" << iterador->Dato().Capa_ << "-> p"  << iterador->siguiente << endl;
+        retorno << "p" << iterador->Dato()->Capa_ << "[label=\"Capa " << iterador->Dato()->id << "\"; group = "<< this->id + 1 <<"; style=rounded; shape=box];" << endl;
+        if (iterador->siguiente){
+            NodoL<Capa*> *aux = iterador->siguiente;
+            retorno << "p" << iterador->Dato()->Capa_ << "-> p"  << aux->Dato()->Capa_ << endl;
+        }
         iterador = iterador->siguiente;
     }
     retorno << "}" << endl;
@@ -66,11 +68,11 @@ string Imagen::Dot(){
 string Imagen::Renderizar(){
     Matriz *imagen = new Matriz();
     //Recupera el inicio de la cola
-    NodoL<Capa> *pivCola = colaCapas->Iterador();
+    NodoL<Capa*> *pivCola = colaCapas->Iterador();
     //Recorre la lista
     while(pivCola){
         //Vuelca las capas almacenadas en la cola
-        imagen->Volcar(pivCola->Dato().Capa_);
+        imagen->Volcar(pivCola->Dato()->Capa_);
         //Se mueve al siguiente nodo
         pivCola = pivCola->siguiente;
     }
@@ -81,7 +83,7 @@ string Imagen::Renderizar(){
  * Recupera la cola de capas
  * @return 
  */
-Cola<Capa> *Imagen::Capas(){
+Cola<Capa*> *Imagen::Capas(){
     return colaCapas;
 }
 /**
@@ -97,7 +99,7 @@ int Imagen::Id(){
  */
 Imagen::Imagen(const int& id_){
     id = id_;
-    colaCapas = new Cola<Capa>();
+    colaCapas = new Cola<Capa*>();
 }
 
 #endif /* IMAGEN_H */

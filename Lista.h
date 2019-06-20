@@ -30,12 +30,73 @@ class Lista {
         bool Eliminar(int id);
         bool Modificar(int id, Imagen &nuevo);
         string Dot();
+        string ListarImagenes();
+        string ImagenDot(int id);
+        string Renderizar(int id);
     private:
         NodoL<Imagen> *primero;
         NodoL<Imagen> *ultimo;
         int largo;
         //string Recorrer(NodoL<Imagen> *raiz);
 };
+/**
+ * 
+ * @param id
+ * @return 
+ */
+string Lista::Renderizar(int id){
+   if(!primero) 
+       return string();
+   //Recorre la lista buscando el id especificado
+   NodoL<Imagen> *aux = primero;
+   do{
+       if (aux->Dato().Id() == id)
+           return aux->Dato().Renderizar();
+   } while (aux!=primero);
+   return string();
+}
+/**
+ * 
+ * @return 
+ */
+string Lista::ListarImagenes(){
+   stringstream str;
+   if(!primero){
+       return string();
+   }
+   //recorre la lista agregando las imagenes
+   NodoL<Imagen> *aux = primero;
+   stringstream aux_;
+   do {
+       aux_ << aux->DatoPtr();
+       str << aux->Dato().Dot(aux_.str()) << endl;
+       aux = aux->siguiente;
+       aux_.clear();
+       aux_.str(string());
+   } while(aux != primero);
+   return str.str();
+}
+/**
+ * 
+ * @param id
+ * @return 
+ */
+string Lista::ImagenDot(int id){
+    if(!primero){
+        return string();
+    }
+    //Recorre la lsita buscando el id especificado
+    NodoL<Imagen> *aux = primero;
+    stringstream aux_;
+    do{
+        if(aux->Dato().Id() == id){
+            aux_ << aux->DatoPtr();
+            return aux->Dato().Dot(aux_.str());
+        }
+        aux = aux->siguiente;
+    }while (aux!=primero);
+    return string();
+}
 /**
  * Agrega un nuevo apuntador de tipo Imagen
  * @param dato
@@ -113,34 +174,15 @@ string Lista::Dot(){
     retorno << "{rank = same ;";
     NodoL<Imagen> *aux = this->primero;
     do{
-        retorno << aux->DatoPtr() << "->";
+        retorno << "p" << aux->DatoPtr() << "->";
         aux = aux->siguiente;
     }while(aux!=this->primero);
     do{
-        retorno << aux->DatoPtr();
-        if(aux!=this->primero)
-            retorno << "->";
+        retorno << "p" << aux->DatoPtr() << "->";
         aux = aux->anterior;
     }while(aux!=this->primero);
-    retorno << "}" << endl << "}" << endl;
+    retorno << "p" << this->primero->DatoPtr() << "}" << endl << "}" << endl;
     return retorno.str();
 }
-/**
- * 
- * @param raiz
- * @return 
- */
-//string Lista::Recorrer(NodoL<Imagen>* raiz){
-    //stringstream retorno;
-    //if(raiz!=NULL){
-    //    retorno << "p" << raiz->Dato() << "[label=\"Imagen " << raiz->Dato().Id() <<  "\"; group = " << raiz->Dato().Id() <<"];" << endl;
-    //    if (raiz->siguiente != NULL){
-    //        NodoL<Imagen> *aux = raiz->siguiente;
-    //        retorno << "p" << raiz->Dato() << "-> p" << aux->Dato() << endl;
-    //    }
-    //    retorno << Recorrer(raiz->siguiente);
-    //}
-    //return string(); //retorno.str();
-//}
 #endif /* LISTA_H */
 
