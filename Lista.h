@@ -77,7 +77,9 @@ string Lista::ListarImagenes(){
    return str.str();
 }
 /**
- * 
+ * Recorre la cola de capas buscando la imagen que se desea graficar
+ * Una vez localizada la imagen recupera las conexiones de las capas al arbolABB (DOT)
+ * Luego recupera las conexiones de las capas con la imagen (DOT)
  * @param id
  * @return 
  */
@@ -91,7 +93,10 @@ string Lista::ImagenDot(int id){
     do{
         if(aux->Dato().Id() == id){
             aux_ << aux->DatoPtr();
-            return aux->Dato().Dot(aux_.str());
+            stringstream temp ;
+            temp << aux->Dato().DotCapa() << endl;
+            temp << aux->Dato().Dot(aux_.str());
+            return temp.str();
         }
         aux = aux->siguiente;
     }while (aux!=primero);
