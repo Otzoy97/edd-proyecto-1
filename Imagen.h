@@ -36,6 +36,10 @@ private:
     string Recorrer(NodoL<Capa*> nodito);
     Cola<Capa*> *colaCapas;
 };
+/**
+ * Genera las conexiones entre las capas que confroman la Imagen y el arbolABB de capas
+ * @return 
+ */
 string Imagen::DotCapa(){
     stringstream str;
     str << "subgraph clusterPC" << this << "{" << endl << "color=white"<< endl;
@@ -48,7 +52,7 @@ string Imagen::DotCapa(){
     return str.str();
 }
 /**
- * Recupera el dot de la cola de capas
+ * Recupera el dot de la cola de capas de la imagen
  * @param ref nombre del nodo imagen
  * @param group
  * @return 
