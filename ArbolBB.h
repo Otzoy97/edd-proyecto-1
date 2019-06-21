@@ -26,7 +26,7 @@ class ArbolB{
         ArbolB() : raiz(0) {}
         void Agregar(Capa dato);
         NodoB<Capa> *Buscar(int id);
-        void Eliminar(int id);
+        //void Eliminar(int id);
         bool EsVacia() { return raiz == NULL; }
         string Dot(); 
     private:
@@ -34,8 +34,8 @@ class ArbolB{
         string Recorrer(NodoB<Capa> *raiz);
         NodoB<Capa> *Agregar(NodoB<Capa> *raiz, Capa dato);
         NodoB<Capa> *Buscar(NodoB<Capa> *raiz, int id);
-        void Eliminar(NodoB<Capa> *raiz, int id);
-        void Reemplazar(NodoB<Capa> *raiz, NodoB<Capa> *aux);
+        //void Eliminar(NodoB<Capa> *raiz, int id);
+        //void Reemplazar(NodoB<Capa> *raiz, NodoB<Capa> *aux);
 };
 /**
  * Visita todos los nodos creando su representación gráfica y enlzándolos
@@ -46,17 +46,15 @@ string ArbolB::Recorrer(NodoB<Capa> *raiz){
     stringstream b;
     if (!raiz)
         return string();
-    b << "p" << raiz->DatoPtr() <<"[label=\"<f0> | <f1> Capa " << raiz->Dato().id << "| <f2> \"];" << endl;
+    b << "pCapa_" << raiz->Dato().id <<"x[label=\"<f0> | <f1> Capa " << raiz->Dato().id << "| <f2> \"];" << endl;
     if(raiz->izq){
         NodoB<Capa> *tempCapa =  raiz->izq;
-        Capa temp = tempCapa->Dato();
-        b << "\"p" << raiz->DatoPtr() << "\":f0 -> \"p"  << tempCapa->DatoPtr() << "\":f1" << endl;
+        b << "\"pCapa_" << raiz->Dato().id << "x\":f0 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
         b << Recorrer(raiz->izq);
     }
     if(raiz->der){
         NodoB<Capa> *tempCapa = raiz->der;
-        Capa temp = tempCapa->Dato();
-        b << "\"p" << raiz->DatoPtr() << "\":f2 -> \"p"  << tempCapa->DatoPtr() << "\":f1" << endl;
+        b << "\"pCapa_"<< raiz->Dato().id << "x\":f2 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
         b << Recorrer(raiz->der);
     }
     return b.str();
@@ -97,11 +95,11 @@ NodoB<Capa>* ArbolB::Buscar(int id){
  * Elimina un nodo del árbol
  * @param id
  */
-void ArbolB::Eliminar(int id){
-    if(!EsVacia()){
-        Eliminar(raiz, id);
-    }
-}
+//void ArbolB::Eliminar(int id){
+//    if(!EsVacia()){
+//        Eliminar(raiz, id);
+//    }
+//}
 /**
  * 
  * @param raiz
@@ -138,7 +136,7 @@ NodoB<Capa> *ArbolB::Buscar(NodoB<Capa>* root, int id){
  * @param id
  * @return 
  */
-void ArbolB::Eliminar(NodoB<Capa>* root, int id){
+/*void ArbolB::Eliminar(NodoB<Capa>* root, int id){
     if (root == NULL)
         return;
     if (root->Dato().id < id)
@@ -161,14 +159,14 @@ void ArbolB::Eliminar(NodoB<Capa>* root, int id){
  * @param raiz
  * @param aux
  */
-void ArbolB::Reemplazar(NodoB<Capa>* raiz, NodoB<Capa>* aux){
+/*void ArbolB::Reemplazar(NodoB<Capa>* raiz, NodoB<Capa>* aux){
     if (raiz->der == NULL){
-        aux->Dato() = raiz->Dato();
+        aux->Dato() = raiz->Dato(); 
         aux = raiz;
         raiz = raiz->izq;
     } else 
         Reemplazar(raiz->der, aux);
-}
+}*/
 
 #endif /* ARBOLB_H */
 
