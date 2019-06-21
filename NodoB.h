@@ -22,6 +22,7 @@ template <class T> class NodoB : public INodo{
         NodoB *izq;
         NodoB *der;
         T Dato() {return dato;}
+        T* DatoPtr() {return &dato;}
     private:
         T dato;
 };
