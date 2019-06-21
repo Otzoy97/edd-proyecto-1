@@ -30,11 +30,23 @@ public:
     Cola<Capa*> *Capas();
     string Renderizar();
     string Dot(const string &padre);
+    string DotCapa();
 private:
     int id;
     string Recorrer(NodoL<Capa*> nodito);
     Cola<Capa*> *colaCapas;
 };
+string Imagen::DotCapa(){
+    stringstream str;
+    str << "subgraph clusterPC" << this << "{" << endl << "color=white"<< endl;
+    NodoL<Capa*> *iterador = colaCapas->Iterador();
+    while(iterador){
+        str << "p" << iterador << "-> \"pCapa_" << iterador->Dato()->id  << "x\":f1" << endl;
+        iterador = iterador->siguiente;
+    }
+    str << "}";
+    return str.str();
+}
 /**
  * Recupera el dot de la cola de capas
  * @param ref nombre del nodo imagen
@@ -48,12 +60,12 @@ string Imagen::Dot(const string &padre){
     retorno << "subgraph cluster" << this << "{" << endl << "color=white" << endl;
     NodoL<Capa*> *iterador = colaCapas->Iterador();
     retorno << "p" << padre << "[label=\"Imagen " << this->id << "\"; group = " << this->id + 1 << ";  shape=box];" <<  endl;
-    retorno << "p" << padre << " -> p" <<  iterador->Dato()->Capa_ << endl;
+    retorno << "p" << padre << " -> p" <<  iterador/*->Dato()->Capa_*/ << endl;
     while(iterador){
-        retorno << "p" << iterador->Dato()->Capa_ << "[label=\"Capa " << iterador->Dato()->id << "\"; group = "<< this->id + 1 <<"; style=rounded; shape=box];" << endl;
+        retorno << "p" << iterador/*->Dato()->Capa_*/ << "[label=\"Capa " << iterador->Dato()->id << "\"; group = "<< this->id + 1 <<"; style=rounded; shape=box];" << endl;
         if (iterador->siguiente){
             NodoL<Capa*> *aux = iterador->siguiente;
-            retorno << "p" << iterador->Dato()->Capa_ << "-> p"  << aux->Dato()->Capa_ << endl;
+            retorno << "p" << iterador/*->Dato()->Capa_*/ << "-> p"  << aux/*->Dato()->Capa_*/ << endl;
         }
         iterador = iterador->siguiente;
     }
