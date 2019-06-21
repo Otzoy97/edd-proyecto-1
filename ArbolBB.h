@@ -28,22 +28,65 @@ class ArbolB{
         NodoB<Capa> *Buscar(int id);
         void Eliminar(int id);
         bool EsVacia() { return raiz == NULL; }
+        string Dot(); 
     private:
         NodoB<Capa> *raiz;
-        void Agregar(NodoB<Capa> *raiz, Capa dato);
+        string Recorrer(NodoB<Capa> *raiz);
+        NodoB<Capa> *Agregar(NodoB<Capa> *raiz, Capa dato);
         NodoB<Capa> *Buscar(NodoB<Capa> *raiz, int id);
         void Eliminar(NodoB<Capa> *raiz, int id);
         void Reemplazar(NodoB<Capa> *raiz, NodoB<Capa> *aux);
 };
 /**
- * 
+ * Visita todos los nodos creando su representación gráfica y enlzándolos
+ * @param raiz
+ * @return 
+ */
+string ArbolB::Recorrer(NodoB<Capa> *raiz){
+    stringstream b;
+    if (!raiz)
+        return string();
+    b << "p" << raiz->DatoPtr() <<"[label=\"<f0> | <f1> Capa " << raiz->Dato().id << "| <f2> \"];" << endl;
+    if(raiz->izq){
+        NodoB<Capa> *tempCapa =  raiz->izq;
+        Capa temp = tempCapa->Dato();
+        b << "\"p" << raiz->DatoPtr() << "\":f0 -> \"p"  << tempCapa->DatoPtr() << "\":f1" << endl;
+        b << Recorrer(raiz->izq);
+    }
+    if(raiz->der){
+        NodoB<Capa> *tempCapa = raiz->der;
+        Capa temp = tempCapa->Dato();
+        b << "\"p" << raiz->DatoPtr() << "\":f2 -> \"p"  << tempCapa->DatoPtr() << "\":f1" << endl;
+        b << Recorrer(raiz->der);
+    }
+    return b.str();
+}
+/**
+ * Genera el archivo dot del árbol
+ * @return 
+ */
+string ArbolB::Dot(){
+    stringstream str;
+    str << "subgraph cluster" << this << "{" << endl;
+    str << "node [shape=record]" << endl << "color=white" << endl; 
+    str << Recorrer(raiz);
+    str << "}";
+    return str.str();
+}
+
+
+/**
+ * Agrega un nuevo nodo al árobl
  * @param dato
  */
 void ArbolB::Agregar(Capa dato){
-    Agregar(raiz, dato);
+    if (!raiz)
+        raiz = Agregar(this->raiz, dato);
+    else 
+        Agregar(this->raiz, dato);
 }
 /**
- * 
+ * Busca un id de capa en el árbol
  * @param id
  * @return 
  */
@@ -51,7 +94,7 @@ NodoB<Capa>* ArbolB::Buscar(int id){
     return Buscar(raiz, id);
 }
 /**
- * 
+ * Elimina un nodo del árbol
  * @param id
  */
 void ArbolB::Eliminar(int id){
@@ -65,20 +108,13 @@ void ArbolB::Eliminar(int id){
  * @param id
  * @return 
  */
-void ArbolB::Agregar(NodoB<Capa>* root, Capa dato){
-    if(root == NULL){
-        NodoB<Capa> *root = new NodoB<Capa>(dato);
-    } else if (dato.Id() <= root->Dato().Id()){
-        if(root->izq != NULL)
-            Agregar(root->izq, dato);
-        else
-            root->izq = new NodoB<Capa>(dato);
-    } else if (dato.Id() > root->Dato().Id()){
-        if(root->der != NULL)
-            Agregar(root->der, dato);
-        else 
-            root->der = new NodoB<Capa>(dato);
-    }
+NodoB<Capa> *ArbolB::Agregar(NodoB<Capa>* root, Capa dato){
+    if (root == NULL) return new NodoB<Capa>(dato);
+    if (dato.id < root->Dato().id)
+        root->izq = Agregar(root->izq, dato);
+    else if (dato.id > root->Dato().id)
+        root->der =  Agregar(root->der, dato);
+    return root;
 }
 /**
  * 
@@ -89,9 +125,9 @@ void ArbolB::Agregar(NodoB<Capa>* root, Capa dato){
 NodoB<Capa> *ArbolB::Buscar(NodoB<Capa>* root, int id){
     if(root == NULL)
         return NULL;
-    if (root->Dato().Id() == id)
+    if (root->Dato().id == id)
         return root;
-    if (root->Dato().Id() < id)
+    if (root->Dato().id < id)
         return Buscar(root->der, id);
     else
         return Buscar(root->izq, id);
@@ -105,11 +141,11 @@ NodoB<Capa> *ArbolB::Buscar(NodoB<Capa>* root, int id){
 void ArbolB::Eliminar(NodoB<Capa>* root, int id){
     if (root == NULL)
         return;
-    if (root->Dato().Id() < id)
+    if (root->Dato().id < id)
         Eliminar(root->der, id);
-    else if (root->Dato().Id() > id)
+    else if (root->Dato().id > id)
         Eliminar(root->izq, id);
-    else if(root->Dato().Id() == id){
+    else if(root->Dato().id == id){
         NodoB<Capa> *aux = root;
         if (root->izq == NULL)
             aux = aux->der;
