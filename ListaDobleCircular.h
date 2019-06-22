@@ -26,7 +26,7 @@ class ListaDobleCircular{
         void AgregarAlFinal(int dato);
         void Eliminar(int id);
         int Largo(){return largo;}
-        string Dot(const string &padre, int grupo);
+        string Dot(const string &padre/*, int grupo*/);
     private:
         
         NodoL<int> *primero;
@@ -86,17 +86,17 @@ void ListaDobleCircular::AgregarAlFinal(int dato){
  * @param nombre
  * @return 
  */
-string ListaDobleCircular::Dot(const string &padre, int grupo){
+string ListaDobleCircular::Dot(const string &padre/*, int grupo*/){
     stringstream str;
-    str << "subgraph cluster" << this << "{" << endl << "color=white" << endl;
-    str << padre << "->" << primero->DatoPtr() << endl;
+    str << "subgraph cluster" << this << "{" << endl << "color=white" << endl << "node[shape=record]" << endl;
+    str << padre << "-> p" << this << "_" << primero->DatoPtr() << endl;
     ///Servirá para recorrer la lista
     NodoL<int> *temp = primero;
     do {
-        str << "p" << temp->DatoPtr() << "[label=\"Imagen]" << temp->Dato() << "\"; group =" << grupo << "]" << endl;
+        str << "p" << this << "_"  <<temp->DatoPtr() << "[label=\"Imagen " << temp->Dato() /*<< "\"; group =" << grupo*/ << "]" << endl;
         if(temp->siguiente != primero){
             NodoL<int> *aux = temp->siguiente;
-            str << "p" << temp->DatoPtr() << "-> p" << aux->DatoPtr() << endl;
+            str << "p" << this << "_" << temp->DatoPtr() << "-> p" << this << "_" <<aux->DatoPtr() << endl;
         }
         temp = temp->siguiente;
     } while (temp != primero);
