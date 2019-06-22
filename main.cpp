@@ -21,13 +21,40 @@
 
 #include "Matriz.h"
 #include "NodoM.h"
+#include "Lista.h"
 
 using namespace std;
 
 /*
  * 
  */
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {        
+    Lista *l = new Lista();
+    ArbolB *t = new ArbolB();
+    for(int i = 0; i < 10; i++){
+        Imagen img(i);
+        for (int j = 0; j < 10; j++){
+            Matriz *mat = new Matriz();
+            for(int k = 0; k < 10; k++){
+                for(int l = 0; l< 10 ; l++){
+                    if(l%2 == 0)
+                        mat->AgregarEn(k,l,"white");
+                    else 
+                        mat->AgregarEn(k,l,"black");
+                }
+            }
+            Capa *cap = new Capa(mat,rand()%2+j);
+            t->Agregar(*cap);
+            img.Capas()->AgregarAlFinal(cap);
+        }
+        l->Agregar(img);
+    }
+    cout << l->ImagenDot(3);
+    //cout << l->ListarImagenes();
+    //cout << l->Dot();
+    //cout << l->Renderizar(0);
+    cout << endl << t->Dot() << endl;
+    //cout << l->
     /*int i = 0;
     NodoM<string> *a = new NodoM<string>(0,0,"A");
     NodoM<string> *b = new NodoM<string>(0,0,"A");
@@ -63,5 +90,15 @@ int main(int argc, char** argv) {
     cout << vaciado->Pintar() << endl;*/
     
     //Imagen img(0);// = new Imagen(0) ;
+    
+    
+    //A/rbolB *d = new ArbolB();
+    ///for(int i = 0 ; i < 10; i++){
+////        Capa cap();
+//        d->Agregar()
+    //}
+        
+    //d->
+    
 }
 
