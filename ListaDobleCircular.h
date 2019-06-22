@@ -14,7 +14,6 @@
 #ifndef LISTADOBLECIRCULAR_H
 #define LISTADOBLECIRCULAR_H
 #include "NodoL.h"
-#include "Imagen.h"
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -24,14 +23,14 @@ using namespace std;
 class ListaDobleCircular{
     public:
         ListaDobleCircular(): primero(0), ultimo(0), largo(0) {}
-        void AgregarAlFinal(Imagen* dato);
+        void AgregarAlFinal(int dato);
         void Eliminar(int id);
         int Largo(){return largo;}
         string Dot(const string &padre, int grupo);
     private:
         
-        NodoL<Imagen*> *primero;
-        NodoL<Imagen*> *ultimo;
+        NodoL<int> *primero;
+        NodoL<int> *ultimo;
         int largo;
 };
 /**
@@ -39,21 +38,21 @@ class ListaDobleCircular{
  * @param id
  */
 void ListaDobleCircular::Eliminar(int id){
-    NodoL<Imagen*> *temp = primero;
-    if(temp->Dato()->Id() == id){
+    NodoL<int> *temp = primero;
+    if(temp->Dato() == id){
         if(largo > 1){
-            inicio = temp->siguiente;
+            primero = temp->siguiente;
             temp->siguiente->anterior =NULL;
         }else {
-            inicio =NULL;
+            primero =NULL;
         }
         largo--;
         delete temp;
         return;
     }
     do{
-        if(temp->Dato()->Id() == id){
-            NodoL<Imagen*> *aux = temp->siguiente;
+        if(temp->Dato() == id){
+            NodoL<int> *aux = temp->siguiente;
             temp->anterior->siguiente = aux;
             if (aux!=NULL)
                 aux->anterior = temp->anterior;
@@ -69,8 +68,8 @@ void ListaDobleCircular::Eliminar(int id){
  * Agrega una nueva imagen al final de la lista
  * @param dato
  */
-void ListaDobleCircular::AgregarAlFinal(Imagen* dato){
-    NodoL<Imagen*> *nuevo = new NodoL<Imagen*>(dato);
+void ListaDobleCircular::AgregarAlFinal(int dato){
+    NodoL<int> *nuevo = new NodoL<int>(dato);
     if(primero!=NULL){
         nuevo->siguiente = primero;
         nuevo->anterior = ultimo;
@@ -90,14 +89,14 @@ void ListaDobleCircular::AgregarAlFinal(Imagen* dato){
 string ListaDobleCircular::Dot(const string &padre, int grupo){
     stringstream str;
     str << "subgraph cluster" << this << "{" << endl << "color=white" << endl;
-    str << padre << "->" << primero->Dato() << endl;
+    str << padre << "->" << primero->DatoPtr() << endl;
     ///Servirá para recorrer la lista
-    NodoL<Imagen*> *temp = primero;
+    NodoL<int> *temp = primero;
     do {
-        str << "p" << temp->Dato() << "[label=\"Imagen]" <<  << "\"; group =" << grupo << "]" << endl;
+        str << "p" << temp->DatoPtr() << "[label=\"Imagen]" << temp->Dato() << "\"; group =" << grupo << "]" << endl;
         if(temp->siguiente != primero){
-            NodoL<Imagen*> *aux = temp->siguiente;
-            str << "p" << temp->Dato() << "-> p" << aux->Dato() << endl;
+            NodoL<int> *aux = temp->siguiente;
+            str << "p" << temp->DatoPtr() << "-> p" << aux->DatoPtr() << endl;
         }
         temp = temp->siguiente;
     } while (temp != primero);
