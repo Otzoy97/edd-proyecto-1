@@ -17,13 +17,15 @@
 
 template <class T> class NodoB : public INodo{
     public:
-        NodoB() : izq(0), der(0), dato(0){}
-        NodoB(T dato_) : izq(0), der(0), dato(dato_) {}
+        NodoB() : izq(0), der(0), dato(0), altura(0) {}
+        NodoB(T dato_) : izq(0), der(0), dato(dato_), altura(0) {}
         NodoB *izq;
         NodoB *der;
         T Dato() {return dato;}
         T* DatoPtr() {return &dato;}
+        void Dato(T dato_) { dato = dato_; }
     private:
+        int altura;
         T dato;
 };
 
