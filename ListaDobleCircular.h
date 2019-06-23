@@ -82,14 +82,15 @@ void ListaDobleCircular::AgregarAlFinal(int dato){
     }
 }
 /**
- * Genera el texto que se utilizará para generar el gráfico
+ * Genera el texto que se utilizará para generar el gráfico de las imagenes que posee el usuario
+ * y posteriormente enlazarlas con el gráfico del árbol B
  * @param nombre
  * @return 
  */
 string ListaDobleCircular::Dot(const string &padre/*, int grupo*/){
     stringstream str;
-    str << "subgraph cluster" << this << "{" << endl << "color=white" << endl << "node[shape=record]" << endl;
-    str << padre << "-> p" << this << "_" << primero->DatoPtr() << endl;
+    //str << "subgraph cluster" << this << "{" << endl << "color=white" << endl << "node[shape=record]" << endl;
+    str << endl << padre << "-> p" << this << "_" << primero->DatoPtr() << endl;
     ///Servirá para recorrer la lista
     NodoL<int> *temp = primero;
     do {
@@ -100,7 +101,7 @@ string ListaDobleCircular::Dot(const string &padre/*, int grupo*/){
         }
         temp = temp->siguiente;
     } while (temp != primero);
-    str << "}" ;
+    //str << "}" ;
     return str.str();
 }
 #endif /* LISTADOBLECIRCULAR_H */
