@@ -358,6 +358,9 @@ string Matriz::Pintar(){
             }
             tempCelda = tempCelda->siguiente;
         }
+        if (!tempCelda)
+            for(contador ; contador < cols; contador++)
+                retorno << "<td border=\"0\" bgcolor=\"white\"></td>" << endl;
         retorno << "</tr>" << endl;
         tempFila = tempFila->abajo;
     }
