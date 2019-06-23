@@ -29,14 +29,49 @@ class ArbolB{
         //void Eliminar(int id);
         bool EsVacia() { return raiz == NULL; }
         string Dot(); 
+        string DotEspejo();
     private:
         NodoB<Capa> *raiz;
         string Recorrer(NodoB<Capa> *raiz);
+        string RecorrerEspejo(NodoB<Capa>*);
         NodoB<Capa> *Agregar(NodoB<Capa> *raiz, Capa dato);
         NodoB<Capa> *Buscar(NodoB<Capa> *raiz, int id);
         //void Eliminar(NodoB<Capa> *raiz, int id);
         //void Reemplazar(NodoB<Capa> *raiz, NodoB<Capa> *aux);
 };
+/**
+ * Devuelve un dot con el árbol espejo
+ * @return 
+ */
+string ArbolB::DotEspejo(){
+    stringstream sr;
+    sr << "digraph clusterMirror" << this << "{"  << "color=white" << endl << "node[shape=record" << endl;
+    sr << RecorrerEspejo(raiz);
+    sr << "}";
+    return sr.str();
+}
+/**
+ * Recorre el arbol y genera su espejo
+ * @param raiz
+ * @return 
+ */
+string ArbolB::RecorrerEspejo(NodoB<Capa>* raiz){
+    stringstream str;
+    if(!raiz) 
+        return string();
+    b << "pCapa_" << raiz->Dato().id <<"x[label=\"<f0> | <f1> Capa " << raiz->Dato().id << "| <f2> \"];" << endl;
+    if(raiz->izq){
+        NodoB<Capa> *tempCapa =  raiz->izq;
+        b << "\"pCapa_" << raiz->Dato().id << "x\":f2 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
+        b << Recorrer(raiz->izq);
+    }
+    if(raiz->der){
+        NodoB<Capa> *tempCapa = raiz->der;
+        b << "\"pCapa_"<< raiz->Dato().id << "x\":f0 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
+        b << Recorrer(raiz->der);
+    }
+    return str.str();
+}
 /**
  * Visita todos los nodos creando su representación gráfica y enlzándolos
  * @param raiz
