@@ -17,6 +17,7 @@
 
 class Capa {
 public:
+    Capa() : Capa_(0), id(0) {}
     Capa(Matriz* capa_, int id_) : Capa_(capa_) , id (id_) {}
     int id;
     Matriz* Capa_;

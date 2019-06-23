@@ -56,7 +56,7 @@ string ArbolB::DotEspejo(){
  * @return 
  */
 string ArbolB::RecorrerEspejo(NodoB<Capa>* raiz){
-    stringstream str;
+    stringstream b;
     if(!raiz) 
         return string();
     b << "pCapa_" << raiz->Dato().id <<"x[label=\"<f0> | <f1> Capa " << raiz->Dato().id << "| <f2> \"];" << endl;
@@ -70,7 +70,7 @@ string ArbolB::RecorrerEspejo(NodoB<Capa>* raiz){
         b << "\"pCapa_"<< raiz->Dato().id << "x\":f0 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
         b << Recorrer(raiz->der);
     }
-    return str.str();
+    return b.str();
 }
 /**
  * Visita todos los nodos creando su representación gráfica y enlzándolos
