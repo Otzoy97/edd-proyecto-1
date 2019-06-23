@@ -20,6 +20,7 @@ template <class T> class Pila{
         T Ver();
         T Desapilar();
         bool EsVacio();
+        int Largo() {return largo;}
     private:
         int largo = 0;
         NodoL<T> *inicio;
@@ -42,7 +43,7 @@ template <class T> T Pila<T>::Desapilar(){
     return dato;
 }
 
-template <class T> Pila<T>::Apilar(T dato){
+template <class T> void Pila<T>::Apilar(T dato){
     NodoL<T> *nuevo = new NodoL<T>(dato);
     if (!EsVacio()){
         nuevo->siguiente = inicio;
