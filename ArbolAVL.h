@@ -35,9 +35,26 @@ class ArbolAVL{
         NodoB<Usuario> *Buscar(string id){
             return Buscar(raiz, id);
         }
+        /**
+         * Obtiene el dot del árbol espejo
+         * @return 
+         */
+        string DotEspejo(){
+            stringstream str;
+            str << "digraph G {" << endl
+            str << this->RecorrerEspejo(raiz) << endl;
+            str << "}";
+            return str.str();
+        }
+        /**
+         * Obtiene el dot del árbol
+         * @return 
+         */
         string Dot(){
             stringstream str;
-            
+            str << "digraph G { " << endl;
+            str << this->Recorrer(raiz) << endl;
+            str << "}";
             return str.str();
         }
     private:
@@ -246,6 +263,11 @@ class ArbolAVL{
         int Altura(NodoB<Usuario>* raiz){
             return (!raiz ? -1 : raiz->Altura());
         }
+        /**
+         * Recorre el árbol generando su dot
+         * @param raiz
+         * @return 
+         */
         string Recorrer(NodoB<Usuario> *raiz){
             stringstream b;
             if(!raiz)
@@ -255,6 +277,29 @@ class ArbolAVL{
             if(raiz->izq){
                 NodoB<Usuario> *tempUser = raiz->izq;
                 b << "\"pUser_" << raiz->Dato().Id() << "x\":f0 -> \"pUser_" << tempUser->Dato().Id() << "x\":f1" << endl;
+                b << Recorrer(raiz->izq);
+            }
+            if(raiz->der){
+                NodoB<Usuario> *tempUser = raiz->der;
+                b << "\"pUser_" << raiz->Dato().Id() << "x\":f2 -> \"pUser_" << tempUser->Dato().Id() << "x\":f1" << endl;
+                b << Recorrer(raiz->der);
+            }
+            return b.str();
+        }
+        /**
+         * Recorre el árbol generando su espejo
+         * @param raiz
+         * @return 
+         */
+        string RecorrerEspejo(NodoB<Usuario> *raiz){
+            stringstream b;
+            if(!raiz)
+                return string();
+            b << "pUser_" << raiz->Dato().Id() << "x[label=\"<f0> | <f1> " << raiz->Dato().Id() << " | <f2> \"];" << endl;
+            b << raiz->Dato().Imagenes()->Dot( "\"pUser_" + raiz->Dato().Id() + "x\":f1" );
+            if(raiz->izq){
+                NodoB<Usuario> *tempUser = raiz->izq;
+                b << "\"pUser_" << raiz->Dato().Id() << "x\":f2 -> \"pUser_" << tempUser->Dato().Id() << "x\":f1" << endl;
                 b << Recorrer(raiz->izq);
             }
             if(raiz->der){
