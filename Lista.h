@@ -27,8 +27,18 @@ class Lista {
         Lista() : primero(0), ultimo(0), largo(0) {}
         int Largo();
         void Agregar(Imagen dato);
-        bool Eliminar(int id);
-        bool Modificar(int id, Imagen &nuevo);
+        //bool Eliminar(int id);
+        //bool Modificar(int id, Imagen &nuevo);
+        bool Existe(int id){
+            NodoL<Imagen> *temp = primero;
+            do{
+                if(temp->Dato().Id() == id){
+                    return true;
+                }
+                temp = temp->siguiente;
+            }while(temp!=primero);
+            return false;
+        }
         string Dot();
         string ListarImagenes();
         string ImagenDot(int id);
@@ -118,53 +128,6 @@ void Lista::Agregar(Imagen dato){
         primero = nuevo;
         ultimo = primero;
     }
-}
-/**
- * Modifica un apuntador de tipo Imagen
- * @param id
- * @param nuevo
- * @return 
- */
-bool Lista::Modificar(int id, Imagen &nuevo){
-    NodoL<Imagen> *temp = primero;
-    while(temp!=NULL){
-        if(temp->Dato().Id() == id){
-            temp->Dato() = nuevo;
-            return true;
-        }
-        temp = temp->siguiente;
-    }
-    return false;
-}
-/**
- * Elimina un apuntador de tipo Imagen
- * @param id
- */
-bool Lista::Eliminar(int id){
-    NodoL<Imagen> *temp = primero;
-    if(temp->Dato().Id() == id){
-        if(temp->siguiente != NULL){
-            primero = temp->siguiente;
-            temp->siguiente->anterior = NULL;
-        } else {
-            primero = NULL;
-            ultimo = NULL;
-        }
-        delete temp;
-        return true;
-    }
-    NodoL<Imagen> *aux;
-    while(temp->siguiente!=NULL){
-        aux = temp->siguiente;
-        if(aux->Dato().Id() == id){
-            temp->siguiente = aux->siguiente;
-            break;
-        }
-        temp = temp->siguiente;
-    }
-    delete aux;
-    delete temp;
-    return false;
 }
 /**
  * 

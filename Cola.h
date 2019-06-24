@@ -24,6 +24,7 @@ template <class T> class Cola{
     public:
         Cola() : primero(0), ultimo(0), largo(0) {}
         void AgregarAlFinal(T dato);
+        void AgregarAlInicio(T dato);
         T Desencolar();
         int Largo() {return largo;}
         //string Dot();
@@ -35,6 +36,24 @@ template <class T> class Cola{
         NodoL<T> *ultimo;
         int largo;
 };
+/**
+ * Agrega al inicio de la cola;
+ * @param dato
+ * @return 
+ */
+template <class T> void Cola<T>::AgregarAlInicio(T dato){
+    NodoL<T> *nuevo = new NodoL<T>(dato);
+    if(primero!=NULL){
+        nuevo->siguiente = primero;
+        primero = nuevo;
+        largo++;
+    } else {
+        primero = nuevo;
+        primero->siguiente = ultimo;
+        ultimo = primero;
+        largo++;
+    }
+}
 /**
  * Devuelve el primer dato de lalista
  * @return 

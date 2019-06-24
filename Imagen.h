@@ -25,6 +25,7 @@ using namespace std;
 
 class Imagen {
 public:
+    Imagen() : id(-1),colaCapas(0){}
     Imagen(const int &id_);
     int Id();
     Cola<Capa*> *Capas();
