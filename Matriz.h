@@ -269,8 +269,14 @@ string Matriz::Dot(){
     }
     //Recorre de nuevo la matriz creando las conexiones entre los nodos
     //Recupera el "palindromo de la lista de encabezados columnas
-    string palDotRow = PalDotRow(pivoteMatriz->siguiente);
-    auxFila << "{rank=same; p"<< pivoteMatriz  << "->" << palDotRow.substr(0,palDotRow.length()-2) << ";}" << endl;
+    string palDotRow;// = PalDotRow(pivoteMatriz->siguiente);
+    auxFila << "{rank=same; p"<< pivoteMatriz  ;
+    NodoM<string> *auxAuxFila = pivoteMatriz->siguiente;
+    while(auxAuxFila){
+        auxFila << " -> p" << auxAuxFila;
+        auxAuxFila = auxAuxFila->siguiente;
+    }
+    auxFila << ";}" << endl;
     //A través de un ciclo recorre las filas y recupera su lista (conexiones)
     NodoM<string> *tempFila = pivoteMatriz->abajo;
     while(tempFila){
@@ -280,8 +286,14 @@ string Matriz::Dot(){
     }
     //Recorre por última vez la matriz creando las conexiones entre las columnas
     //Recupera el palindromo de la lista de encabezados de fila
-    string palDotCol = PalDotCol(pivoteMatriz->abajo);
-    auxCol << "p" << pivoteMatriz << "->" <<palDotCol.substr(0,palDotCol.length()-2) << ";" << endl;
+    string palDotCol;// = PalDotCol(pivoteMatriz->abajo);
+    NodoM<string> *auxAuxCol = pivoteMatriz->abajo;
+    auxCol << "p" << pivoteMatriz;// << "->" <<palDotCol.substr(0,palDotCol.length()-2) << ";" << endl;
+    while(auxAuxCol){
+        auxCol << " -> p" << auxAuxCol;
+        auxAuxCol = auxAuxCol->abajo;
+    }
+    auxCol << ";"<< endl;
     //A través de un ciclo recore la columnas y recupera su lista (conexiones)
     NodoM<string> *tempCol = pivoteMatriz->siguiente;
     while(tempCol){
