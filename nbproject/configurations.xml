@@ -11,7 +11,7 @@
       <itemPath>INodo.h</itemPath>
       <itemPath>Imagen.h</itemPath>
       <itemPath>Lista.h</itemPath>
-      <itemPath>ListaDobleCircular.h</itemPath>
+      <itemPath>ListaDoble.h</itemPath>
       <itemPath>Matriz.h</itemPath>
       <itemPath>NodoB.h</itemPath>
       <itemPath>NodoL.h</itemPath>
@@ -65,7 +65,7 @@
       </item>
       <item path="Lista.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="ListaDobleCircular.h" ex="false" tool="3" flavor2="0">
+      <item path="ListaDoble.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Matriz.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -118,7 +118,7 @@
       </item>
       <item path="Lista.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="ListaDobleCircular.h" ex="false" tool="3" flavor2="0">
+      <item path="ListaDoble.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Matriz.h" ex="false" tool="3" flavor2="0">
       </item>
