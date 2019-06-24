@@ -41,7 +41,7 @@ class ArbolAVL{
          */
         string DotEspejo(){
             stringstream str;
-            str << "digraph G {" << endl;
+            str << "digraph G {" << endl << "node[shape=record];" << endl;
             str << this->RecorrerEspejo(raiz) << endl;
             str << "}";
             return str.str();
@@ -52,7 +52,7 @@ class ArbolAVL{
          */
         string Dot(){
             stringstream str;
-            str << "digraph G { " << endl;
+            str << "digraph G {" << endl << "node[shape=record];" << endl;
             str << this->Recorrer(raiz) << endl;
             str << "}";
             return str.str();
