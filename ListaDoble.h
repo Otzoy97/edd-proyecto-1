@@ -27,8 +27,23 @@ class ListaDoble{
         void Eliminar(int id);
         int Largo(){return largo;}
         string Dot(const string &padre/*, int grupo*/);
+        /**
+         * Recorre la lista buscando el entero especificado
+         * @param id
+         * @return true si existe, false si no :v
+         */
+        bool Existe(int id){
+            if(!primero)
+                return false;
+            NodoL<int> *temp = primero;
+            while(temp){
+                if(temp->Dato() == id)
+                    return true;
+                temp = temp->siguiente;
+            }
+            return false;
+        }
     private:
-        
         NodoL<int> *primero;
         NodoL<int> *ultimo;
         int largo;
