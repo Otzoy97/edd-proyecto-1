@@ -14,6 +14,8 @@
 #include <string>
 #include <fstream>
 #include <bits/stdc++.h>
+#include <regex>
+#include <exception>
 
 #include "Capa.h"
 #include "Usuario.h"
@@ -26,6 +28,9 @@
 
 #include "Matriz.h"
 #include "NodoM.h"
+#include "NodoB.h"
+#include "NodoL.h"
+
 #include "Lista.h"
 
 #include "Pila.h"
@@ -39,6 +44,10 @@ bool LeerImagen(string const &);
 void EscribirArchivo(string const &, string const &);
 void Graphviz(string const&);
 
+void CargarArchivo();
+void RenderizarImagen();
+void Reportes();
+
 ArbolB *arbolCapas = new ArbolB();
 ArbolAVL *arbolUsuarios = new ArbolAVL();
 Lista *listaImagenes = new Lista();
@@ -48,6 +57,51 @@ Lista *listaImagenes = new Lista();
  * 
  */
 int main(int argc, char** argv) {
+//    int aux, id, hasta;
+//    static int top[5] ;
+//    static int fil[5];
+//    do{
+//    scanf("%d %d", &id, &aux);
+//    cout << endl;
+//    
+//                for(int i = 0; i < 5; i++){
+//                    if(aux >= top[i]){
+//                        //hasta = i==0 ? 1 : 0;
+//                        for(int j = 4; j >= (i==0 ? i+1 : i); j--){
+//                                top[j] = top[j-1];
+//                                fil[j] = fil[j-1];
+//                            }
+//                        top[i] = aux;
+//                        fil[i] = id;
+//                        break;
+//                    }
+//                }
+//    for(int i = 0 ; i<5; i++){
+//        cout << *(fil + i) << " -> " << *(top  +i) << endl;
+//    }
+//    cout << endl;
+//    } while(true);
+//    string decision;
+//    //Al comenzar mostrará el menu en un ciclo infinito :v
+//    do{
+//        cout << "    <-MENU->" <<endl;
+//        cout << " 1. Cargar archivos" <<endl;
+//        cout << " 2. Renderizar imagen" <<endl;
+//        cout << " 3. Estado de memoria" <<endl;
+//        cout << " 4. Salir" <<endl;
+//        cin >> decision;
+//        if (decision == "1"){
+//            
+//        } else if (decision == "2"){
+//            
+//        } else if (decision == "3"){
+//            
+//        } else if (decision == "4"){
+//            return 0;
+//        } else {
+//            cout << "\"" << decision << "\" no es una opción valida" << endl << endl;
+//        }
+//    }while(true);
     /*ListaDoble *l = new ListaDoble();
     for(int i = 0 ; i< 0;i++){
         l->AgregarAlFinal(i);
@@ -59,20 +113,309 @@ int main(int argc, char** argv) {
     l->AgregarAlFinal(10);
     l->AgregarAlFinal(10);        
     cout <<l->Dot("a") << endl;*/
-    LeerCapa("/home/sorem/capas");
-    LeerImagen("/home/sorem/imagenes");
-    LeerUsuario("/home/sorem/Descargas/usuarios.txt");
+//    LeerCapa("/home/sorem/capas");
+//    LeerImagen("/home/sorem/imagenes");
+//    LeerUsuario("/home/sorem/Descargas/usuarios.txt");
+//    stringstream str;
+//    str << "digraph G{" << listaImagenes->Dot() << listaImagenes->ListarImagenes() << "}" <<endl;
+//    EscribirArchivo("img",str.str());
+//    Graphviz("img");
+//    str.str(string());
+//    str << "digraph G{" << arbolCapas->Dot() << "}" << endl;
+//    EscribirArchivo("capasTree", str.str());
+//    Graphviz("capasTree");
+//    str.str(string());
+//    EscribirArchivo("userTree", arbolUsuarios->Dot());
+//    Graphviz("userTree");
+}
+/**
+ * Muestra el menú de cargar archivos
+ */
+void CargarArchivo(){
+    string decision;
+    string URL;
+    bool resultado;
+    do{
+        cout << "    <-CARGAR ARCHIVOS->" <<endl;
+        cout << " 1. Capa" << endl;
+        cout << " 2. Imagen" << endl;
+        cout << " 3. Usuario" << endl;
+        cout << " 4. Regresar a MENU" << endl << endl;
+        cin >> decision;
+        if (decision == "1"){
+            cout << "Escriba la dirección absoluta del archivo" << endl;
+            cin >> URL;
+            resultado = LeerCapa(URL);
+            if (resultado) 
+                cout << "Capas cargadas correctamente" << endl;
+            else 
+                cout << "Ocurrió un error al cargar las capas" << endl;
+        } else if (decision == "2"){
+            cout << "Escriba la dirección absoluta del archivo" << endl;
+            cin >> URL;
+            resultado = LeerImagen(URL);
+            if (resultado) 
+                cout << "Imagenes cargadas correctamente" << endl;
+            else
+                cout << "Ocurrió un error al cargar las imagenes" << endl;
+        } else if (decision == "3"){
+            cout << "Escriba la dirección absoluta del archivo" << endl;
+            cin >> URL;
+            resultado = LeerUsuario(URL);
+            if (resultado) 
+                cout << "Usuarios cargados correctamente" << endl;
+            else 
+                cout << "Ocurrió un error al cargar los usuarios" << endl;
+        } else if (decision  == "4"){
+            return;
+        } else {
+            cout << "\"" << decision << "\" no es una opción valida" << endl << endl;
+        }
+    } while (true);
+}
+
+void RenderizarImagen(){
+    string decision;
+    do{
+        cout << "    <-RENDERIZAR IMAGEN->" << endl;
+        cout << " 1. Por recorrido limitado" << endl;
+        cout << " 2. Por id de imagen" << endl;
+        cout << " 3. Por id de capa" << endl;
+        cout << " 4. Por usuario" << endl << endl;
+        cout << " 5. Regresar a MENU" << endl;
+        cin >> decision;
+        if(decision == "1"){
+            
+        } else if (decision == "2"){
+            
+        } else if (decision == "3"){
+            
+        } else if (decision == "4"){
+            
+        } else if (decision == "5"){
+            return;
+        } else {
+            cout << "\"" << decision << "\" no es una opción valida"  << endl << endl;
+        }
+    }while(true);
+}
+
+void Reportes(){
+    string decision;
     stringstream str;
-    str << "digraph G{" << listaImagenes->Dot() << listaImagenes->ListarImagenes() << "}" <<endl;
-    EscribirArchivo("img",str.str());
-    Graphviz("img");
-    str.str(string());
-    str << "digraph G{" << arbolCapas->Dot() << "}" << endl;
-    EscribirArchivo("capasTree", str.str());
-    Graphviz("capasTree");
-    str.str(string());
-    EscribirArchivo("userTree", arbolUsuarios->Dot());
-    Graphviz("userTree");
+    regex r("[0-9]+");
+    do{
+        cout << "    <-ESTADO DE MEMORIA->" << endl;
+        cout << " 1.  Ver lista de imagenes" << endl;
+        cout << " 2.  Ver árbol de capas" << endl;
+        cout << " 3.  Ver árbol de capas espejo" << endl;
+        cout << " 4.  Ver capa" << endl;
+        cout << " 5.  Ver imagen y árbol de capas" << endl;
+        cout << " 6.  Ver árbol de usuarios" << endl;
+        cout << "     <-OTROS REPORTES->" << endl;
+        cout << " 7.  Top 5 imágenes con más número de capas" << endl;
+        cout << " 8.  Cantidad de capas que son hojas" << endl;
+        cout << " 9.  Profundidad de árbol de capas" << endl;
+        cout << " 10. Mostrar arbol de capas en postorden" << endl;
+        cout << " 11. Listar capas en preorden" << endl;
+        cout << " 12. Listar capas en inorden" << endl;
+        cout << " 13. Listar capas en postorden" << endl;
+        cout << " 14. Top 5 usuario con más imágenes" << endl;
+        cout << " 15. Árbol espejo de usuarios" << endl;
+        cout << " 16. Listar usuarios en preorden" << endl;
+        cout << " 17. Listar usuarios en inorden" << endl;
+        cout << " 18. Listar usuarios en postorden" << endl;
+        cout << " 19. Listar usuarios por niveles" << endl << endl;
+        cout << " 20. Regresar a MENU" << endl;
+        cin >> decision;
+        if (decision == "1"){
+            if(listaImagenes->EsVacia()){
+                cout << endl << "La lista de imágenes está vacía" << endl;
+                continue;
+            }
+            //La lista posee algo
+            str.str(string());
+            str << "digraph G{" << listaImagenes->Dot() << listaImagenes->ListarImagenes() << "}" <<endl;
+            EscribirArchivo("EM_Lista",str.str());
+            Graphviz("EM_Lista");
+        } else if (decision == "2"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            str.str(string());
+            str << "digraph G{" << arbolCapas->Dot() << "}" << endl;
+            EscribirArchivo("EM_ACapas",str.str());
+            Graphviz("EM_ACapas");
+        } else if (decision == "3"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            EscribirArchivo("EM_ACapasE", arbolCapas->DotEspejo());
+            Graphviz("EM_ACapasE");
+        } else if (decision == "4"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            cout << "Especifique el id de la capa a mostrar" << endl;
+            cin >> decision;
+            if (regex_match(decision,r)){
+                int ID;
+                istringstream iss (decision);
+                iss >> ID;
+                NodoB<Capa> *temp = arbolCapas->Buscar(ID);
+                if (!temp){
+                    cout << "La capa " << decision << " no existe en el árbol de capas" << endl;
+                    continue;
+                }
+                //El nodo recuperado no es nulo
+                try{
+                    EscribirArchivo("EM_Capa" + ID,temp->Dato().Capa_->Dot());
+                    Graphviz("EM_Capa"+ID);
+                } catch (exception &e){
+                    cout << "Ocurrió un error al intentar generar la matriz para la capa " << ID << endl << e.what() << endl;
+                }
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+            }
+        } else if (decision == "5"){
+            if(listaImagenes->EsVacia()){
+                cout << endl << "La lista de imágenes está vacía" << endl;
+                continue;
+            }
+            //La lista posee algo
+            str.str(string());
+            cout << "Especifique el id de la imagen a mostrar" << endl;
+            cin >> decision;
+            if(regex_match(decision,r)){
+                int ID;
+                istringstream iss (decision);
+                iss >> ID;
+                if (!listaImagenes->Existe(ID)){
+                    cout << "La imagen " << ID <<  " no existe" << endl;
+                    continue;
+                }
+                //La imagen sí existe;
+                string dot_txt = listaImagenes->ImagenDot(ID);
+                EscribirArchivo("EM_Imagen"+ID,dot_txt);
+                Graphviz("EM_Imagen"+ID);
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+            }
+        } else if (decision == "6"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El arbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee alo
+            try{
+                //Recupera el dot del arbol 
+                EscribirArchivo("EM_ArbolAVL", arbolUsuarios->Dot());
+                Graphviz("EM_ArbolAVL");
+            } catch (exception &e){
+                cout << "Ocurrió un error al intentar graficar el árbol de Usuarios " << endl << e.what() << endl;
+            }
+        } else if (decision == "7"){
+            if(listaImagenes->EsVacia()){
+                cout << endl << "La lista de imágenes está vacía" << endl;
+                continue;
+            }
+            //La lista posee algo
+            listaImagenes->Top5();
+        } else if (decision == "8"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolCapas->ListarHojas();
+        } else if (decision == "9"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            cout << "La profundidad del árbol de capas es de " << arbolCapas->Profundidad() << endl;
+        } else if (decision == "10"){
+            Matriz *ref = new Matriz();
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            arbolCapas->RenderizaPostorden(ref);
+            //Muestra la matriz y Renderiza la imagen
+        } else if (decision == "11"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            arbolCapas->Preorden();
+        } else if (decision == "12"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            arbolCapas->Inorden();
+        } else if (decision == "13"){
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            arbolCapas->Postorden();
+        } else if (decision == "14"){
+            
+        } else if (decision == "15"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            string a = arbolUsuarios->DotEspejo();
+            EscribirArchivo("EM_ArbolAVLE",a);
+            Graphviz("EM_ArbolAVLE");
+        } else if (decision == "16"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolUsuarios->Preorden();
+        } else if (decision == "17"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolUsuarios->Inorden();
+        } else if (decision == "18"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolUsuarios->Postorden();
+        } else if (decision == "19"){
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolUsuarios->Niveles();
+        } else if (decision == "20"){
+            return;
+        } else {
+            cout << "\"" << decision << "\" no es una opción valida"  << endl << endl;
+        }
+    } while (true);
 }
 
 bool LeerCapa(string const &url){
