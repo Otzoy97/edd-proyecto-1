@@ -29,6 +29,11 @@ class Lista {
         void Agregar(Imagen dato);
         //bool Eliminar(int id);
         //bool Modificar(int id, Imagen &nuevo);
+        /**
+         * Verifica la existencia de una imagen con el ID especificado
+         * @param id
+         * @return 
+         */
         bool Existe(int id){
             NodoL<Imagen> *temp = primero;
             do{
