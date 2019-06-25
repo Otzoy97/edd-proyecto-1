@@ -25,7 +25,7 @@ using namespace std;
 class Lista {
     public:
         Lista() : primero(0), ultimo(0), largo(0) {}
-        int Largo();
+        int Largo() {return largo;}
         void Agregar(Imagen dato);
         //bool Eliminar(int id);
         //bool Modificar(int id, Imagen &nuevo);
@@ -42,7 +42,43 @@ class Lista {
         string Dot();
         string ListarImagenes();
         string ImagenDot(int id);
+        bool EsVacia() {return primero==NULL;}
         string Renderizar(int id);
+        /**
+         * Recorre todos los nodos de la lista
+         * Almacena el id y la cantidad de capas, crea un arreglo almacenando solo máximos (cantidad de capas)
+         * Al finalizar recorrer el arreglo , mostrando el top 5 
+         */
+        void Top5(){
+            //Recorre todos los nodos
+            NodoL<Imagen> *temp = primero;
+            int top[5];
+            int fil[5] = {-1,-1,-1,-1,-1};
+            int aux;
+            int id;
+            do{
+                aux = temp->Dato().Capas()->Largo();
+                id = temp->Dato().Id();
+                for(int i = 0; i < 5; i++){
+                    if(aux >= top[i]){
+                        for(int j = 4; j >= (i==0 ? i+1 : i); j--){
+                            top[j] = top[j-1];
+                            fil[j] = fil[j-1];
+                        }
+                        top[i] = aux;
+                        fil[i] = id;
+                        break;
+                    }
+                }
+                temp = temp->siguiente;
+            } while(temp!=primero);
+            //Recorre los arreglos mostrando los nodos
+            for(int i = 0 ; i < 5; i++){
+                if(fil[i] == -1 )
+                    break;
+                cout << "Imagen " << *(fil + i) << " -> " << *(top  +i) << " capas" << endl;
+            }
+        }
     private:
         NodoL<Imagen> *primero;
         NodoL<Imagen> *ultimo;
@@ -123,10 +159,12 @@ void Lista::Agregar(Imagen dato){
         nuevo->anterior = ultimo;
         primero->anterior = nuevo;
         ultimo->siguiente = nuevo;
-        ultimo = nuevo;        
+        ultimo = nuevo; 
+        largo++;
     } else {       
         primero = nuevo;
         ultimo = primero;
+        largo++;
     }
 }
 /**
