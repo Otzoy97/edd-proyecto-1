@@ -35,6 +35,8 @@ class Lista {
          * @return 
          */
         bool Existe(int id){
+            if (!primero)
+                return false;
             NodoL<Imagen> *temp = primero;
             do{
                 if(temp->Dato().Id() == id){
@@ -57,10 +59,10 @@ class Lista {
         void Top5(){
             //Recorre todos los nodos
             NodoL<Imagen> *temp = primero;
-            int top[5];
+            int top[5] = {-1,-1,-1,-1,-1};
             int fil[5] = {-1,-1,-1,-1,-1};
-            int aux;
-            int id;
+            int aux = 0;
+            int id = 0;
             do{
                 aux = temp->Dato().Capas()->Largo();
                 id = temp->Dato().Id();
@@ -103,6 +105,7 @@ string Lista::Renderizar(int id){
    do{
        if (aux->Dato().Id() == id)
            return aux->Dato().Renderizar();
+       aux = aux->siguiente;
    } while (aux!=primero);
    return string();
 }
@@ -168,6 +171,8 @@ void Lista::Agregar(Imagen dato){
         largo++;
     } else {       
         primero = nuevo;
+        primero->siguiente = primero;
+        primero->anterior = primero;
         ultimo = primero;
         largo++;
     }
