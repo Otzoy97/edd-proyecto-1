@@ -62,14 +62,58 @@ class ArbolB{
         void Postorden(){
             Postorden(raiz);
         }
+        
+        string RenderizarPreOrden(int capas){
+            Matriz *ref = new Matriz();
+            RenderizarPre(raiz,ref,capas);
+            return ref->Pintar();
+        }
+        string RenderizarPostOrden(int capas){
+            Matriz *ref = new Matriz();
+            RenderizarPost(raiz,ref,capas);
+            return ref->Pintar();
+        }
+        string RenderizarInOrden(int capas){
+            Matriz *ref = new Matriz();
+            RenderizarIn(raiz,ref,capas);
+            return ref->Pintar();
+        }
         /**
-         * Renderiza una imagen en postorden
-         * @param ref
+         * 
+         * @return 
          */
-        void RenderizaPostorden(Matriz* ref){
+        string RenderizaPostorden(){
+            Matriz *ref = new Matriz();
             RenderizarPO(raiz, ref);
+            return ref->Pintar();
         }
     private:
+        int RenderizarPre(NodoB<Capa> *raiz, Matriz* ref, int capas){
+            if(!raiz)
+                return capas;
+            if(capas <= 0)
+                return 0;
+            ref->Volcar(raiz->Dato().Capa_);
+            return RenderizarPre(raiz->der, ref, RenderizarPre(raiz->izq, ref, capas-1) - 1);
+        }
+        int RenderizarPost(NodoB<Capa> *raiz, Matriz* ref, int capas){
+            if(!raiz)
+                return capas;
+            if (capas <= 0)
+                return 0;
+            int aux = RenderizarPost(raiz->der, ref, RenderizarPost(raiz->izq, ref, capas-1)-1);
+            ref->Volcar(raiz->Dato().Capa_);
+            return aux;
+        }
+        int RenderizarIn(NodoB<Capa> *raiz, Matriz* ref, int capas){
+            if(!raiz)
+                return capas;
+            if(capas<=0)
+                return 0;
+            int aux = RenderizarIn(raiz->izq, ref, capas-1);
+            ref->Volcar(raiz->Dato().Capa_);
+            return RenderizarIn(raiz->der, ref, aux - 1);
+        }
         void RenderizarPO(NodoB<Capa> *raiz, Matriz* ref){
             if(!raiz)
                 return;
