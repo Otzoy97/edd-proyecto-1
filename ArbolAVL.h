@@ -118,10 +118,6 @@ class ArbolAVL{
                 cout << fil[i] << " " << *(top + i) << endl;
             }
         }
-    private:
-        NodoB<Usuario> *raiz;
-        int top[5] = {-1,-1,-1,-1,-1};
-        string fil[5] = {"","","","",""};
         /**
          * Reacomoda los arreglos cuando se agrega un usuario
          * @param user
@@ -140,6 +136,10 @@ class ArbolAVL{
                 }
             }
         }
+    private:
+        NodoB<Usuario> *raiz;
+        int top[5] = {-1,-1,-1,-1,-1};
+        string fil[5] = {"","","","",""};
         void Niveles(NodoB<Usuario> *raiz, int nivel){
             if(!raiz)
                 return;
@@ -209,7 +209,6 @@ class ArbolAVL{
                 //Balancea el árbol
                 if (Altura(raiz->izq) - Altura(raiz->der) == 2 ){
                     NodoB<Usuario> *temp = raiz->izq;
-                    AgrTop(dato.Id(),dato.Imagenes()->Largo());
                     if (dato.Id() < temp->Dato().Id())
                         raiz = SimpleDer(raiz);
                     else 
@@ -222,7 +221,6 @@ class ArbolAVL{
                 //Balancea el árbol
                 if (Altura(raiz->der) - Altura(raiz->izq) == 2){
                     NodoB<Usuario> *temp = raiz->der;
-                    AgrTop(dato.Id(),dato.Imagenes()->Largo());
                     if(dato.Id() > temp->Dato().Id())
                         raiz = SimpleIzq(raiz);
                     else 
@@ -371,7 +369,7 @@ class ArbolAVL{
         NodoB<Usuario> *Buscar(NodoB<Usuario>* raiz, string id){
             //NodoB<Usuario> *temp;
             if(!raiz){
-                cout << "El usuario \"" << id << "\" no existe";
+                //cout << "El usuario \"" << id << "\" no existe";
                 return NULL;
             }
             else if (id < raiz->Dato().Id())
@@ -426,12 +424,12 @@ class ArbolAVL{
             if(raiz->izq){
                 NodoB<Usuario> *tempUser = raiz->izq;
                 b << "\"pUser_" << raiz->Dato().Id() << "x\":f2 -> \"pUser_" << tempUser->Dato().Id() << "x\":f1" << endl;
-                b << Recorrer(raiz->izq);
+                b << RecorrerEspejo(raiz->izq);
             }
             if(raiz->der){
                 NodoB<Usuario> *tempUser = raiz->der;
                 b << "\"pUser_" << raiz->Dato().Id() << "x\":f0 -> \"pUser_" << tempUser->Dato().Id() << "x\":f1" << endl;
-                b << Recorrer(raiz->der);
+                b << RecorrerEspejo(raiz->der);
             }
             return b.str();
         }
