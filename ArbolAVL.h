@@ -129,7 +129,7 @@ class ArbolAVL{
          */
         void AgrTop(string user, int img){
             for(int i = 0; i < 5; i++){
-                if(aux >= top[i]){
+                if(img >= top[i]){
                     for(int j = 4; j >= (i==0 ? i+1 : i); j--){
                         top[j] = top[j-1];
                         fil[j] = fil[j-1];
