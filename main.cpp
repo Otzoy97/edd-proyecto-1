@@ -139,7 +139,7 @@ void ABCUsuario(){
     string decision;
     regex r("[0-9]+");
     do{
-        cout << "    ABC USUARIOS" << endl;
+        cout << endl << "    ABC USUARIOS" << endl;
         cout << " 1. Agregar usuario (solo ID)" << endl;
         cout << " 2. Modificar usuario" << endl;
         cout << " 3. Eliminar usuario" << endl;
@@ -152,7 +152,7 @@ void ABCUsuario(){
             NodoB<Usuario> *temp = arbolUsuarios->Buscar(decision);
             //Si es nulo, no existe, por lo tanto sí se puede agregar
             if(temp){
-                cout << "\"" << decision << "\" ya existe" << endl;
+                cout << "El usuario \"" << decision << "\" no se puede agregar porque crearía duplicados. Se omitió" << endl;
                 continue;
             }
             ListaDoble *list = new ListaDoble();
@@ -182,7 +182,7 @@ void ABCUsuario(){
                         int ID;
                         istringstream iss (decision);
                         iss >> ID;
-                        if(listaImagenes->Existe(ID)){
+                        if(!listaImagenes->Existe(ID)){
                             cout << "La imagen con id = " << ID << " no existe en memoria" << endl;
                             continue;
                         }
@@ -266,7 +266,7 @@ void CargarArchivo(){
     string URL;
     bool resultado;
     do{
-        cout << "    <-CARGAR ARCHIVOS->" <<endl;
+        cout << endl << "    <-CARGAR ARCHIVOS->" <<endl;
         cout << " 1. Capa" << endl;
         cout << " 2. Imagen" << endl;
         cout << " 3. Usuario" << endl;
@@ -310,7 +310,7 @@ void RenderizarImagen(){
     string decision;
     regex r("[0-9]+");
     do{
-        cout << "    <-RENDERIZAR IMAGEN->" << endl;
+        cout << endl << "    <-RENDERIZAR IMAGEN->" << endl;
         cout << " 1. Por recorrido limitado" << endl;
         cout << " 2. Por id de imagen" << endl;
         cout << " 3. Por id de capa" << endl;
@@ -367,7 +367,7 @@ void RenderizarImagen(){
                 int ID;
                 istringstream iss (decision);
                 iss >> ID;
-                if(listaImagenes->Existe(ID)){
+                if(!listaImagenes->Existe(ID)){
                     cout << "La imagen con id = " << ID << " no existe en memoria" << endl;
                     continue;
                 }
@@ -467,7 +467,7 @@ void Reportes(){
     stringstream str;
     regex r("[0-9]+");
     do{
-        cout << "    <-ESTADO DE MEMORIA->" << endl;
+        cout << endl << "    <-ESTADO DE MEMORIA->" << endl;
         cout << " 1.  Ver lista de imagenes" << endl;
         cout << " 2.  Ver árbol de capas" << endl;
         cout << " 3.  Ver árbol de capas espejo" << endl;
@@ -563,7 +563,7 @@ void Reportes(){
                     continue;
                 }
                 //La imagen sí existe;
-                string dot_txt = listaImagenes->ImagenDot(ID);
+                string dot_txt = "digraph G{ " +  arbolCapas->Dot() + " " + listaImagenes->ImagenDot(ID) + " }";
                 EscribirArchivo("EM_Imagen"+to_string(ID),dot_txt);
                 Graphviz("EM_Imagen"+to_string(ID));
             } else {
@@ -764,6 +764,13 @@ bool LeerCapa(string const &url){
                     continue;
                 }
                 if (linea.at(i) == '}'){
+                    //Verifica que no haya duplicados
+                    if(arbolCapas->Buscar(cap.id)){
+                        //El nodo no es nulo
+                        cout << endl << "No se puede agregar la capa " << cap.id << " porque crearía duplicados en el árbol de capas. Se omitió. Linea " << lineaArchivo << endl;
+                        cap = Capa();
+                        continue;
+                    }
                     arbolCapas->Agregar(cap);
                     cap = Capa();
                     continue;
@@ -807,14 +814,21 @@ bool LeerImagen(string const &url){
                         temp = arbolCapas->Buscar(pila->Ver());
                         if(!temp){
                             cout << "La capa " << pila->Desapilar() << " no existe en memoria. Línea " << lineaArchivo << endl;
-                            continue;
+                            return 0;
                         }
                         //Existe el nodo, procede a guardar el apuntador 
                         img.Capas()->AgregarAlInicio(temp->DatoPtr());
                         //Despila el nodo
                         pila->Desapilar();
                     }while(!pila->EsVacio());
+                    //Verfica que la lista de imagenes no posea duplicados
+                    if(listaImagenes->Existe(img.Id())){
+                        cout << endl << "No se puede agregar la imagen " <<  img.Id() << " porque crearía duplicados en la lista de imágenes. Esta imagen se omitió. Linea " << lineaArchivo  <<endl;
+                        //img = Imagen();
+                        continue;
+                    }
                     listaImagenes->Agregar(img);
+                    //img = Imagen();
                     continue;
                 }
                 //{ ,(conteo de pila == 1), 0
@@ -880,8 +894,13 @@ bool LeerUsuario(string const &url){
     while(getline(archivoEntrada, linea)){
         for(int i = 0 ; i < linea.length() ; i++){
             if(!pila->EsVacio()){
-                if(linea.at(i) >= '0' && linea.at(i) <= '9'){
+                if(linea.at(i) >= '0' && linea.at(i) <= '9' && pila->Ver() != -1){
                     pila->Apilar(pila->Desapilar()*10 + (linea.at(i) - '0') );
+                    continue;
+                }
+                if(linea.at(i) >= '0' && linea.at(i) <= '9' && pila->Ver() == -1){
+                    pila->Desapilar();
+                    pila->Apilar( (linea.at(i) - '0') );
                     continue;
                 }
                 if (linea.at(i) == 32 || linea.at(i) == 9 || linea.at(i) == 10 || linea.at(i) == 11) 
@@ -890,7 +909,29 @@ bool LeerUsuario(string const &url){
                     pila->Apilar(0);
                     continue;
                 }
-                if (linea.at(i) == ';' && nombreUsuario.length() > 0){
+                if (linea.at(i) == ';' && nombreUsuario.length() > 0 && pila->Ver() == -1){
+                    //Verifica que el ID del usuario no exista ya en el arbol
+                    if(arbolUsuarios->Buscar(nombreUsuario)){
+                        cout << endl << "No se puede agregar \"" << nombreUsuario << "\" porque crearía duplicados. Se omitió. Linea " << lineaArchivo << endl;
+                        nombreUsuario = "";
+                        continue;
+                    }
+                    ListaDoble *lista = new ListaDoble();
+                    pila->Desapilar();
+                    Usuario user(nombreUsuario,lista);
+                    //Agrega el usuario al arbol
+                    arbolUsuarios->Agregar(user);
+                    arbolUsuarios->AgrTop(user.Id(),user.Imagenes()->Largo());
+                    nombreUsuario = "";
+                    continue;
+                } 
+                if (linea.at(i) == ';' && nombreUsuario.length() > 0 && pila->Ver()!=-1){
+                    //Verifica que el ID del usuario no exista ya en el arbol
+                    if(arbolUsuarios->Buscar(nombreUsuario)){
+                        cout << endl << "No se puede agregar \"" << nombreUsuario << "\" porque crearía duplicados. Se omitió. Linea " << lineaArchivo << endl;
+                        nombreUsuario = "";
+                        continue;
+                    }
                     ListaDoble *lista = new ListaDoble();
                     //Fin de la línea, se procede a leer el contenido de la pila y meterlo a la lista del usuario
                     while(!pila->EsVacio()){
@@ -898,11 +939,12 @@ bool LeerUsuario(string const &url){
                         if (listaImagenes->Existe(pila->Ver()))
                             lista->AgregarAlFinal(pila->Desapilar());
                         else 
-                            cout << "La imagen " << pila->Desapilar() << " no existe. No se puede agregar a " << nombreUsuario << ". Linea " << lineaArchivo << endl;
+                            cout << "No se puede agregar la imagen " << pila->Desapilar() << " al usuario "<< nombreUsuario << " porque no existe. Linea " << lineaArchivo << endl;
                     }
                     Usuario user(nombreUsuario,lista);
                     //Agrega el usuario al arbol
                     arbolUsuarios->Agregar(user);
+                    arbolUsuarios->AgrTop(user.Id(),user.Imagenes()->Largo());
                     nombreUsuario = "";
                     continue;
                 }
@@ -915,7 +957,7 @@ bool LeerUsuario(string const &url){
                 if (linea.at(i) == 32 || linea.at(i) == 9 || linea.at(i) == 10 || linea.at(i) == 11) 
                     continue;
                 if (linea.at(i) == ':'){
-                    pila->Apilar(0);
+                    pila->Apilar(-1);
                     continue;
                 }
                 if (linea.at(i) == ';' && nombreUsuario.length() > 0 && pila->Ver() == 0 ){
