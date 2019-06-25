@@ -18,6 +18,7 @@
 #include <iostream>
 #include "NodoB.h"
 #include "Capa.h"
+#include "Matriz.h"
 
 using namespace std;
 
@@ -30,7 +31,103 @@ class ArbolB{
         bool EsVacia() { return raiz == NULL; }
         string Dot(); 
         string DotEspejo();
+        /**
+         * Recorre el arbol listando todos los nodos que sean hojas
+         */
+        void ListarHojas(){
+            ListarHojas(raiz);
+        }
+        /**
+         * Recorre el árbol y determina su profundidad
+         * @return 
+         */
+        int Profundidad(){
+            return Profundidad(raiz);
+        }
+        /**
+         * Lista las capas preorden
+         */
+        void Preorden(){
+            Preorden(raiz);
+        }
+        /**
+         * Lista las capas inorden
+         */
+        void Inorden(){
+            Inorden(raiz);
+        }
+        /**
+         * Lista las capas postorden
+         */
+        void Postorden(){
+            Postorden(raiz);
+        }
+        /**
+         * Renderiza una imagen en postorden
+         * @param ref
+         */
+        void RenderizaPostorden(Matriz* ref){
+            RenderizarPO(raiz, ref);
+        }
     private:
+        void RenderizarPO(NodoB<Capa> *raiz, Matriz* ref){
+            if(!raiz)
+                return;
+            RenderizarPO(raiz->izq, ref);
+            RenderizarPO(raiz->der, ref);
+            ref->Volcar(raiz->Dato().Capa_);
+        }
+        void Preorden(NodoB<Capa> *raiz){
+            if (!raiz)
+                return;
+            cout << "Capa " << raiz->Dato().id << endl;
+            Preorden(raiz->izq);
+            Preorden(raiz->der);
+        }
+        void Inorden(NodoB<Capa> *raiz){
+            if(!raiz)
+                return;
+            Inorden(raiz->izq);
+            cout << "Capa " << raiz->Dato().id << endl;
+            Inorden(raiz->der);
+        }
+        void Postorden(NodoB<Capa> *raiz){
+            if(!raiz)
+                return;
+            Postorden(raiz->izq);
+            Postorden(raiz->der);
+            cout << "Capa " << raiz->Dato().id << endl;
+        }
+        
+        /**
+         * Recorre el arbol en busca de su profundidad :v
+         * @param raiz
+         * @return 
+         */
+        int Profundidad(NodoB<Capa> *raiz){
+            if (!raiz)
+                return 0;
+            int p_izq = Profundidad(raiz->izq);
+            int p_der = Profundidad(raiz->der);
+            if (p_izq > p_der)
+                return p_izq + 1;
+            else 
+                return p_der + 1;
+        }
+        /**
+         * Lista todas los nodos que sean hojas
+         * @param raiz
+         */
+        void ListarHojas(NodoB<Capa> *raiz){
+            if(!raiz)
+                return;
+            if( !(raiz->izq || raiz->der) ){
+                cout << "Capa " << raiz->Dato().id << " es hoja" << endl;
+                return;
+            }
+            ListarHojas(raiz->izq);
+            ListarHojas(raiz->der);
+        }
         NodoB<Capa> *raiz;
         string Recorrer(NodoB<Capa> *raiz);
         string RecorrerEspejo(NodoB<Capa>*);
