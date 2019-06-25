@@ -57,8 +57,130 @@ class ArbolAVL{
             str << "}";
             return str.str();
         }
+        bool EsVacio(){
+            return raiz == NULL;
+        }
+        void Inorden(){
+            Inorden(raiz);
+            cout << endl;
+        }
+        void Preorden(){
+            Preorden(raiz);
+            cout << endl;
+        }
+        void Postorden(){
+            Postorden(raiz);
+            cout << endl;
+        }
+        void Niveles(){
+            int altura = Profundidad(raiz);
+            for(int i = 0 ;  i <= altura ; i++){
+                Niveles(raiz, i);
+                cout << endl;
+            }
+            cout << endl;
+        }
+        /**
+         * Reacomoda los arreglos cuando se modifica un usuario
+         * @param user
+         * @param img
+         */
+        void ModTop(string user, int img){
+            //Primero elimina el usuario
+            EliTop(user);
+            //Luego lo agrega
+            AgrTop(user, img);
+        }
+        /**
+         * Reacomoda los arreglos cuando se elimina un usuario
+         * @param ref
+         */
+        void EliTop(string user){
+            for (int i = 0 ; i < 5 ; i++){
+                if(fil[i]==user){
+                    for(int j = i; j < 4; j++){
+                        top[j] = top[j + 1];
+                        fil[j] = fil[j + 1];
+                    }
+                    top[4] = -1;
+                    fil[4] = string();
+                    break;
+                }
+            }
+        }
+        /**
+         * Imprime los arreglos de top
+         */
+        void Top(){
+            for(int i = 0 ; i < 5 ; i++){
+                if (fil[i] == "" || top[i] == -1)
+                    break;
+                cout << fil[i] << " " << *(top + i) << endl;
+            }
+        }
     private:
         NodoB<Usuario> *raiz;
+        int top[5] = {-1,-1,-1,-1,-1};
+        string fil[5] = {"","","","",""};
+        /**
+         * Reacomoda los arreglos cuando se agrega un usuario
+         * @param user
+         * @param img
+         */
+        void AgrTop(string user, int img){
+            for(int i = 0; i < 5; i++){
+                if(aux >= top[i]){
+                    for(int j = 4; j >= (i==0 ? i+1 : i); j--){
+                        top[j] = top[j-1];
+                        fil[j] = fil[j-1];
+                    }
+                    top[i] = img;
+                    fil[i] = user;
+                    break;
+                }
+            }
+        }
+        void Niveles(NodoB<Usuario> *raiz, int nivel){
+            if(!raiz)
+                return;
+            if(nivel == 1)
+                cout << raiz->Dato().Id() << " ";
+            else if (nivel > 1){
+                Niveles(raiz->izq, nivel - 1);
+                Niveles(raiz->der, nivel - 1);
+            }
+        }
+        int Profundidad(NodoB<Usuario> *raiz){
+            if(!raiz)
+                return 0;
+            int p_izq = Profundidad(raiz->izq);
+            int p_der = Profundidad(raiz->der);
+            if (p_izq > p_der)
+                return p_izq + 1;
+            else 
+                return p_der + 1;
+        }
+        void Preorden(NodoB<Usuario> *raiz){
+            if(!raiz)
+                return;
+            cout << raiz->Dato().Id() << endl;
+            Preorden(raiz->izq);
+            Preorden(raiz->der);
+        }
+        void Inorden(NodoB<Usuario> *raiz){
+            if(!raiz)
+                return;
+            Inorden(raiz->izq);
+            cout << raiz->Dato().Id() << endl;
+            Inorden(raiz->der);
+        }
+        void Postorden(NodoB<Usuario> *raiz){
+            if(!raiz)
+                return;
+            Postorden(raiz->izq);
+            Postorden(raiz->der);
+            cout << raiz->Dato().Id() << endl;
+        }
         /**
          * Elimina un nodo y vacía el subarbol que representa
          * @param raiz
@@ -84,8 +206,10 @@ class ArbolAVL{
                 //El dato es menor que el dato actual
                 //Se inserta en el lado izquierdo del subárbol
                 raiz->izq = Insertar(raiz->izq, dato);
+                //Balancea el árbol
                 if (Altura(raiz->izq) - Altura(raiz->der) == 2 ){
                     NodoB<Usuario> *temp = raiz->izq;
+                    AgrTop(dato.Id(),dato.Imagenes()->Largo());
                     if (dato.Id() < temp->Dato().Id())
                         raiz = SimpleDer(raiz);
                     else 
@@ -95,8 +219,10 @@ class ArbolAVL{
                 //El dato es mayor que el dato actual
                 //Se inserta en el lado derecho del subárbol
                 raiz->der = Insertar(raiz->der, dato);
+                //Balancea el árbol
                 if (Altura(raiz->der) - Altura(raiz->izq) == 2){
                     NodoB<Usuario> *temp = raiz->der;
+                    AgrTop(dato.Id(),dato.Imagenes()->Largo());
                     if(dato.Id() > temp->Dato().Id())
                         raiz = SimpleIzq(raiz);
                     else 
@@ -148,7 +274,7 @@ class ArbolAVL{
             return SimpleIzq(raiz);
         }
         /**
-         * 
+         * Realiza una rotación doble hacia la derecha
          * @param 
          * @return 
          */
