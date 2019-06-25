@@ -186,7 +186,7 @@ class ArbolB{
  */
 string ArbolB::DotEspejo(){
     stringstream sr;
-    sr << "digraph clusterMirror" << this << "{"  << "color=white" << endl << "node[shape=record" << endl;
+    sr << "digraph clusterMirror" << this << "{"  << "color=white" << endl << "node[shape=record];" << endl;
     sr << RecorrerEspejo(raiz);
     sr << "}";
     return sr.str();
@@ -204,12 +204,12 @@ string ArbolB::RecorrerEspejo(NodoB<Capa>* raiz){
     if(raiz->izq){
         NodoB<Capa> *tempCapa =  raiz->izq;
         b << "\"pCapa_" << raiz->Dato().id << "x\":f2 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
-        b << Recorrer(raiz->izq);
+        b << RecorrerEspejo(raiz->izq);
     }
     if(raiz->der){
         NodoB<Capa> *tempCapa = raiz->der;
         b << "\"pCapa_"<< raiz->Dato().id << "x\":f0 -> \"pCapa_"  << tempCapa->Dato().id << "x\":f1" << endl;
-        b << Recorrer(raiz->der);
+        b << RecorrerEspejo(raiz->der);
     }
     return b.str();
 }
