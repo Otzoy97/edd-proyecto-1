@@ -341,8 +341,14 @@ string Matriz::PalDotCol(NodoM<string> *nodito){
  */
 string Matriz::Pintar(){
     stringstream retorno;
-    if (esVacia)
-        return string();
+    if (esVacia){
+        retorno << "graph G{" << endl << "node[shape=plaintext]" << endl;
+        retorno << "a0[label=<" << endl;
+        retorno << "<table border=\"0\" cellspacing=\"0\">" << endl;
+        retorno << "<tr>" << endl << "<td border=\"0\" bgcolor=\"black\"></td>" << "</tr>" << endl;
+        retorno << "</table>>];}" << endl;
+        return retorno.str();
+    }
     //Nodo temporales que se utilizarán para recorrer filas, columnas
     NodoM<string> *tempFila = pivoteMatriz->abajo;
     NodoM<string> *tempCelda;
