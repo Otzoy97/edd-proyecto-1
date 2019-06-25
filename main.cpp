@@ -47,6 +47,7 @@ void Graphviz(string const&);
 void CargarArchivo();
 void RenderizarImagen();
 void Reportes();
+void ABCUsuario();
 
 ArbolB *arbolCapas = new ArbolB();
 ArbolAVL *arbolUsuarios = new ArbolAVL();
@@ -81,27 +82,32 @@ int main(int argc, char** argv) {
 //    }
 //    cout << endl;
 //    } while(true);
-//    string decision;
-//    //Al comenzar mostrará el menu en un ciclo infinito :v
-//    do{
-//        cout << "    <-MENU->" <<endl;
-//        cout << " 1. Cargar archivos" <<endl;
-//        cout << " 2. Renderizar imagen" <<endl;
-//        cout << " 3. Estado de memoria" <<endl;
-//        cout << " 4. Salir" <<endl;
-//        cin >> decision;
-//        if (decision == "1"){
-//            
-//        } else if (decision == "2"){
-//            
-//        } else if (decision == "3"){
-//            
-//        } else if (decision == "4"){
-//            return 0;
-//        } else {
-//            cout << "\"" << decision << "\" no es una opción valida" << endl << endl;
-//        }
-//    }while(true);
+    string decision;
+    //Al comenzar mostrará el menu en un ciclo infinito :v
+    do{
+        cout << endl;
+        cout << "    <-MENU->" <<endl;
+        cout << " 1. Cargar archivos" <<endl;
+        cout << " 2. Renderizar imagen" <<endl;
+        cout << " 3. Estado de memoria" <<endl;
+        cout << " 4. ABC Usuarios" <<endl;
+        cout << " 5. Salir" <<endl;
+        cin >> decision;
+        if (decision == "1"){
+            CargarArchivo();
+        } else if (decision == "2"){
+            RenderizarImagen();
+        } else if (decision == "3"){
+            Reportes();
+        } else if (decision == "4"){
+            ABCUsuario();
+        } else if (decision == "5"){
+            return 0;
+        } else {
+            cout << "\"" << decision << "\" no es una opción valida" << endl;
+        }
+        cout << endl;
+    }while(true);
     /*ListaDoble *l = new ListaDoble();
     for(int i = 0 ; i< 0;i++){
         l->AgregarAlFinal(i);
@@ -127,6 +133,130 @@ int main(int argc, char** argv) {
 //    str.str(string());
 //    EscribirArchivo("userTree", arbolUsuarios->Dot());
 //    Graphviz("userTree");
+}  
+
+void ABCUsuario(){
+    string decision;
+    regex r("[0-9]+");
+    do{
+        cout << "    ABC USUARIOS" << endl;
+        cout << " 1. Agregar usuario (solo ID)" << endl;
+        cout << " 2. Modificar usuario" << endl;
+        cout << " 3. Eliminar usuario" << endl;
+        cout << " 4. Regresar a MENU" << endl;
+        cin >> decision;
+        if(decision == "1"){
+            cout << "Especifica el ID del usuario";
+            cin >> decision;
+            //Busca si el usuario ya existe
+            NodoB<Usuario> *temp = arbolUsuarios->Buscar(decision);
+            //Si es nulo, no existe, por lo tanto sí se puede agregar
+            if(temp){
+                cout << "\"" << decision << "\" ya existe" << endl;
+                continue;
+            }
+            ListaDoble *list = new ListaDoble();
+            Usuario user(decision,list);
+            arbolUsuarios->Agregar(user);
+            cout << "Usuario agregado exitosamente" << endl;
+        } else if (decision == "2"){
+            cout << "Especifique el ID del usuario a modificar" << endl;
+            cin >> decision;
+            //busca el usuario
+            NodoB<Usuario> *auxUser = arbolUsuarios->Buscar(decision);
+            if(!auxUser){
+                cout << "No se encontró el usuario " << decision << endl;
+                continue;
+            }
+            //Si existe, continúa el flujo
+            do{
+                cout << "    MODIFICAR USUARIO" << endl;
+                cout << " 1. Agregar imagen" << endl;
+                cout << " 2. Eliminar imagen" << endl;
+                cout << " 3. Regresar a ABC USUARIOS" << endl;
+                cin >> decision;
+                if(decision == "1"){
+                    cout << "Especifique el id de la imagen que desea agregar al usuario " << auxUser->Dato().Id() <<endl;
+                    cin >> decision;
+                    if(regex_match(decision,r)){
+                        int ID;
+                        istringstream iss (decision);
+                        iss >> ID;
+                        if(listaImagenes->Existe(ID)){
+                            cout << "La imagen con id = " << ID << " no existe en memoria" << endl;
+                            continue;
+                        }
+                        //Si existe la imagen
+                        //Verifica que el usuario no posea ya ese id
+                        if(auxUser->Dato().Imagenes()->Existe(ID)){
+                            cout << "El usuario " << auxUser->Dato().Id() << "ya posee una imagen con id = " << ID << endl << "No se puede agregar la imagen " << ID << endl;
+                            continue;
+                        }
+                        //el usuario no posee ese id
+                        auxUser->Dato().Imagenes()->AgregarAlFinal(ID);
+                        arbolUsuarios->ModTop(auxUser->Dato().Id(),auxUser->Dato().Imagenes()->Largo());
+                        cout << "Imagen " << ID << " agregada a " << auxUser->Dato().Id() <<" exitosamente" << endl;
+                    } else {
+                        cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+                    }
+                } else if (decision == "2"){
+                    cout << "Especifique el id de la imagen que desea eliminar del usuario " << auxUser->Dato().Id() <<endl;
+                    cin >> decision;
+                    if(regex_match(decision,r)){
+                        int ID;
+                        istringstream iss (decision);
+                        iss >> ID;
+                        //Verifica que el usuario posea ese id
+                        if(!auxUser->Dato().Imagenes()->Existe(ID)){
+                            cout << "El usuario " << auxUser->Dato().Id() << " no posee una imagen con id = " << ID << endl << "No se puede eliminar la imagen " << ID << endl;
+                            continue;
+                        }
+                        //el usuario posee ese id
+                        auxUser->Dato().Imagenes()->Eliminar(ID);
+                        arbolUsuarios->ModTop(auxUser->Dato().Id(),auxUser->Dato().Imagenes()->Largo());
+                        cout << "Imagen " << ID << " eliminada de " << auxUser->Dato().Id() <<" exitosamente" << endl;
+                    } else {
+                        cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+                    }
+                } else if (decision == "3"){
+                    break;
+                } else {
+                    cout << "\"" << decision << "\" no es una opción valida" << endl;
+                }
+            } while(true);
+        } else if (decision == "3"){
+            cout << "Especifique el ID del usuario a modificar" << endl;
+            cin >> decision;
+            //busca el usuario
+            NodoB<Usuario> *auxUser = arbolUsuarios->Buscar(decision);
+            if(!auxUser){
+                cout << "No se encontró el usuario " << decision << endl;
+                continue;
+            }
+            string tempNUser = auxUser->Dato().Id();
+            //Si existe, continúa el flujo
+            do{
+                cout << "Se procederá a eliminar el usuario " << tempNUser << endl << "Confirme acción [s/n]" << endl;
+                cin >> decision;
+                if (decision == "s" || decision == "S"){
+                    
+                    arbolUsuarios->Remover(tempNUser);
+                    arbolUsuarios->EliTop(tempNUser);
+                    cout << "Eliminación exitosa" << endl;
+                    break;
+                } else if (decision == "n" || decision == "N"){
+                    cout << "Eliminación cancelada" << endl;
+                    break;
+                } else {
+                    cout << "\"" << decision << "\" no es una opción valida" << endl;
+                }               
+            } while (true);
+        } else if (decision == "4") {
+            return;
+        } else {
+            cout << "\"" << decision << "\" no es una opción valida" << endl;
+        }
+    }while(true);
 }
 /**
  * Muestra el menú de cargar archivos
@@ -173,9 +303,12 @@ void CargarArchivo(){
         }
     } while (true);
 }
-
+/**
+ * Muestra el menú para renderizar archivo
+ */
 void RenderizarImagen(){
     string decision;
+    regex r("[0-9]+");
     do{
         cout << "    <-RENDERIZAR IMAGEN->" << endl;
         cout << " 1. Por recorrido limitado" << endl;
@@ -185,13 +318,140 @@ void RenderizarImagen(){
         cout << " 5. Regresar a MENU" << endl;
         cin >> decision;
         if(decision == "1"){
-            
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo;
+            cout << "Especifique la cantidad de capas que desea utilizar" << endl;
+            cin >> decision;
+            if(regex_match(decision,r)){
+                int no;
+                istringstream iss (decision);
+                iss >> no;
+                cout << "    Especifique el tipo de recorrido " << endl;
+                cout << " 1. Preorden" << endl;
+                cout << " 2. Inorden" << endl;
+                cout << " 3. Postorden" << endl;
+                cin >> decision;
+                string dot;
+                if(decision == "1"){
+                   dot = arbolCapas->RenderizarPreOrden(no);
+                   EscribirArchivo("PreCapa_"+to_string(no),dot);
+                   Graphviz("PreCapa_"+to_string(no));
+                } else if(decision == "2"){
+                   dot = arbolCapas->RenderizarInOrden(no);
+                   EscribirArchivo("InCapa_"+to_string(no),dot);
+                   Graphviz("InCapa_"+to_string(no));
+                } else if(decision == "3"){
+                   dot = arbolCapas->RenderizarPostOrden(no);
+                   EscribirArchivo("PostCapa_"+to_string(no),dot);
+                   Graphviz("PostCapa_"+to_string(no));
+                } else {
+                    cout << "\"" << decision << "\"  no es una opción válida" << endl;
+                    continue;
+                }
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+                continue;
+            }
         } else if (decision == "2"){
-            
+            if(listaImagenes->EsVacia()){
+                cout << "La lista de imágenes está vacía " << endl;
+                continue;
+            }
+            //Posee algo
+            cout << "Especifique el id de la imagen a renderizar" << endl;
+            cin >> decision;
+            if(regex_match(decision,r)){
+                int ID;
+                istringstream iss (decision);
+                iss >> ID;
+                if(listaImagenes->Existe(ID)){
+                    cout << "La imagen con id = " << ID << " no existe en memoria" << endl;
+                    continue;
+                }
+                string dot = listaImagenes->Renderizar(ID);
+                try {
+                    EscribirArchivo("Imagen"+to_string(ID),dot);
+                    Graphviz("Imagen"+to_string(ID));
+                } catch (exception &e){
+                    cout << "Ocurrió un error al generar la imagen " << ID << ". " << e.what() << endl;
+                }
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+            }
         } else if (decision == "3"){
-            
+            if(arbolCapas->EsVacia()){
+                cout << endl << "El árbol de capas está vacío" << endl;
+                continue;
+            }
+            //Posee algo
+            cout << "Especifique el id de la capa a renderizar" << endl;
+            cin >> decision;
+            if(regex_match(decision,r)){
+                int ID;
+                istringstream iss (decision);
+                iss >> ID;
+                NodoB<Capa> *temp = arbolCapas->Buscar(ID);
+                //Verifica que el nodo no sea nulo
+                if(!temp){
+                    cout << "La capa " << ID << " no existe" << endl;
+                    continue;
+                }
+                string dot = temp->Dato().Capa_->Pintar();
+                try {
+                    EscribirArchivo("Imagen"+to_string(ID),dot);
+                    Graphviz("Imagen"+to_string(ID));
+                } catch (exception &e){
+                    cout << "Ocurrió un error al generar la imagen " << ID << ". " << e.what() << endl;
+                }
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+            }
         } else if (decision == "4"){
-            
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El arbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El árbol posee algo
+            cout << "Especifique el id del usuario" << endl;
+            cin >> decision;
+            //Busca el usuario
+            NodoB<Usuario> *temp = arbolUsuarios->Buscar(decision);
+            //Verifica que no sea nulo
+            if(!temp){
+                cout << "El usuario \"" << decision << "\" no existe" << endl;
+                continue;
+            }
+            //El usuario existe
+            cout << "Especifique el ID de la imagen que desea renderizar" << endl;
+            cin >> decision;
+            if(regex_match(decision,r)){
+                int ID;
+                istringstream iss (decision);
+                iss >> ID;
+                if(!temp->Dato().Imagenes()->Existe(ID)){
+                    cout << "La imagen con id = " << ID << " no existe para " << temp->Dato().Id() << endl;
+                    continue;
+                }
+                //La imagen si existe para el usuario
+                //Busca la imagen en la lista general
+                if(!listaImagenes->Existe(ID)){
+                    cout << "La imagen con id = " << ID << " no existe en memoria" << endl;
+                    continue;
+                }
+                //La imagen sí existe
+                string dot = listaImagenes->Renderizar(ID);
+                try {
+                    EscribirArchivo(temp->Dato().Id()+"Imagen"+to_string(ID),dot);
+                    Graphviz(temp->Dato().Id()+"Imagen"+to_string(ID));
+                } catch (exception &e){
+                    cout << "Ocurrió un error al generar la imagen " << ID << ". " << e.what() << endl;
+                }
+            } else {
+                cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
+            }
         } else if (decision == "5"){
             return;
         } else {
@@ -199,7 +459,9 @@ void RenderizarImagen(){
         }
     }while(true);
 }
-
+/**
+ * Muestra el menú de Reportes
+ */
 void Reportes(){
     string decision;
     stringstream str;
@@ -275,8 +537,8 @@ void Reportes(){
                 }
                 //El nodo recuperado no es nulo
                 try{
-                    EscribirArchivo("EM_Capa" + ID,temp->Dato().Capa_->Dot());
-                    Graphviz("EM_Capa"+ID);
+                    EscribirArchivo("EM_Capa" + to_string(ID),temp->Dato().Capa_->Dot());
+                    Graphviz("EM_Capa"+to_string(ID));
                 } catch (exception &e){
                     cout << "Ocurrió un error al intentar generar la matriz para la capa " << ID << endl << e.what() << endl;
                 }
@@ -302,8 +564,8 @@ void Reportes(){
                 }
                 //La imagen sí existe;
                 string dot_txt = listaImagenes->ImagenDot(ID);
-                EscribirArchivo("EM_Imagen"+ID,dot_txt);
-                Graphviz("EM_Imagen"+ID);
+                EscribirArchivo("EM_Imagen"+to_string(ID),dot_txt);
+                Graphviz("EM_Imagen"+to_string(ID));
             } else {
                 cout << "\"" << decision << "\" no es una número entero positivo"  << endl << endl;
             }
@@ -348,8 +610,10 @@ void Reportes(){
                 continue;
             }
             //El árbol posee algo
-            arbolCapas->RenderizaPostorden(ref);
-            //Muestra la matriz y Renderiza la imagen
+            string dot = arbolCapas->RenderizaPostorden();
+            //Renderiza la imagen
+            EscribirArchivo("EM_CapasPO", dot);
+            Graphviz("EM_CapasPO");
         } else if (decision == "11"){
             if(arbolCapas->EsVacia()){
                 cout << endl << "El árbol de capas está vacío" << endl;
@@ -372,7 +636,12 @@ void Reportes(){
             //El árbol posee algo
             arbolCapas->Postorden();
         } else if (decision == "14"){
-            
+            if(arbolUsuarios->EsVacio()){
+                cout << endl << "El árbol de usuarios está vacío" << endl;
+                continue;
+            }
+            //El arbol posee algo
+            arbolUsuarios->Top();
         } else if (decision == "15"){
             if(arbolUsuarios->EsVacio()){
                 cout << endl << "El árbol de usuarios está vacío" << endl;
@@ -417,7 +686,11 @@ void Reportes(){
         }
     } while (true);
 }
-
+/**
+ * Lee una archivo de capas
+ * @param url
+ * @return 
+ */
 bool LeerCapa(string const &url){
     //Almacea el archivo de entrada
     ifstream archivoEntrada;
@@ -501,7 +774,11 @@ bool LeerCapa(string const &url){
     }
     return 1;
 }
-
+/**
+ * Lee un archivo de imagenes
+ * @param url
+ * @return 
+ */
 bool LeerImagen(string const &url){
     //Almacena el archivo de entrada
     ifstream archivoEntrada;
@@ -577,7 +854,11 @@ bool LeerImagen(string const &url){
     }
     return 1;
 }
-
+/**
+ * Lee un archivo de usuarios
+ * @param url
+ * @return 
+ */
 bool LeerUsuario(string const &url){
     //Almacena el archivo de entrada
     ifstream archivoEntrada;
@@ -650,14 +931,21 @@ bool LeerUsuario(string const &url){
     }
         
 }
-
+/**
+ * Escribe un nuevo archivo 
+ * @param nombre
+ * @param contenido
+ */
 void EscribirArchivo(string const &nombre, string const &contenido){
     ofstream archivo;
     archivo.open(nombre);
     archivo << contenido;
     archivo.close();
 }
-
+/**
+ * Ejecuta una orden graphviz y muestra la imagen
+ * @param nombre
+ */
 void Graphviz(string const &nombre){
     string cmd = "dot -Tpng "  + nombre + " -o " + nombre + ".png";
     string cmd_d = "eog " + nombre + ".png";
