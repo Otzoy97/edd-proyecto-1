@@ -58,30 +58,6 @@ Lista *listaImagenes = new Lista();
  * 
  */
 int main(int argc, char** argv) {
-//    int aux, id, hasta;
-//    static int top[5] ;
-//    static int fil[5];
-//    do{
-//    scanf("%d %d", &id, &aux);
-//    cout << endl;
-//    
-//                for(int i = 0; i < 5; i++){
-//                    if(aux >= top[i]){
-//                        //hasta = i==0 ? 1 : 0;
-//                        for(int j = 4; j >= (i==0 ? i+1 : i); j--){
-//                                top[j] = top[j-1];
-//                                fil[j] = fil[j-1];
-//                            }
-//                        top[i] = aux;
-//                        fil[i] = id;
-//                        break;
-//                    }
-//                }
-//    for(int i = 0 ; i<5; i++){
-//        cout << *(fil + i) << " -> " << *(top  +i) << endl;
-//    }
-//    cout << endl;
-//    } while(true);
     string decision;
     //Al comenzar mostrará el menu en un ciclo infinito :v
     do{
@@ -108,31 +84,6 @@ int main(int argc, char** argv) {
         }
         cout << endl;
     }while(true);
-    /*ListaDoble *l = new ListaDoble();
-    for(int i = 0 ; i< 0;i++){
-        l->AgregarAlFinal(i);
-    }
-    l->Eliminar(0);
-    l->Eliminar(1);
-    l->Eliminar(9);
-    l->Eliminar(5);
-    l->AgregarAlFinal(10);
-    l->AgregarAlFinal(10);        
-    cout <<l->Dot("a") << endl;*/
-//    LeerCapa("/home/sorem/capas");
-//    LeerImagen("/home/sorem/imagenes");
-//    LeerUsuario("/home/sorem/Descargas/usuarios.txt");
-//    stringstream str;
-//    str << "digraph G{" << listaImagenes->Dot() << listaImagenes->ListarImagenes() << "}" <<endl;
-//    EscribirArchivo("img",str.str());
-//    Graphviz("img");
-//    str.str(string());
-//    str << "digraph G{" << arbolCapas->Dot() << "}" << endl;
-//    EscribirArchivo("capasTree", str.str());
-//    Graphviz("capasTree");
-//    str.str(string());
-//    EscribirArchivo("userTree", arbolUsuarios->Dot());
-//    Graphviz("userTree");
 }  
 
 void ABCUsuario(){
