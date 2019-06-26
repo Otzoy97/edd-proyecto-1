@@ -4,9 +4,6 @@
  *
  * Created on 17 de junio de 2019, 01:16 PM
  */
-
-#include "NodoB.h"
-
 #include <cstdlib>
 #include <stdlib.h>
 #include <iostream>
@@ -25,16 +22,14 @@
 
 #include "Cola.h"
 #include "ListaDoble.h"
+#include "Lista.h"
+#include "Pila.h"
 
 #include "Matriz.h"
+
 #include "NodoM.h"
 #include "NodoB.h"
 #include "NodoL.h"
-
-#include "Lista.h"
-
-#include "Pila.h"
-
 
 using namespace std;
 
@@ -52,7 +47,6 @@ void ABCUsuario();
 ArbolB *arbolCapas = new ArbolB();
 ArbolAVL *arbolUsuarios = new ArbolAVL();
 Lista *listaImagenes = new Lista();
-
 
 /*
  * 
